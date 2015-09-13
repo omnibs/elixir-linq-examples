@@ -3,9 +3,31 @@ defmodule Product do
 end
 
 defmodule Order do
+  @derive [Poison.Encoder]
   defstruct order_id: 0,order_date: "",total: 0.00
 end
 
-defmodule Customer do
-  defstruct customer_id: 0,company_name: "",address: "",city: "",region: "",postal_code: "",country: "",phone: "",fax: "",orders: %Order{}
+defmodule OrderList do
+  @derive [Poison.Encoder]
+  defstruct order: [%Order{}]
 end
+
+defmodule Customer do
+  @derive [Poison.Encoder]
+  defstruct id: 0,name: "",address: "",city: "",region: "",postalcode: "",country: "",phone: "",fax: "",orders: %OrderList{}
+end
+
+# defmodule Order do
+#   @derive [Poison.Encoder]
+#   defstruct [:id, :orderdate, :total]
+# end
+
+# defmodule OrderList do
+#   @derive [Poison.Encoder]
+#   defstruct [:order]
+# end
+
+# defmodule Customer do
+#   @derive [Poison.Encoder]
+#   defstruct [:id, :name, :address, :city, :region, :postalcode, :country, :phone, :fax, :orders]
+# end

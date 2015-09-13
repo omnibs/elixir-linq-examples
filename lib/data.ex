@@ -1,5 +1,8 @@
 defmodule ElixirLinqExamples.Data do
-  
+  def get_customer_list() do
+      {:ok, json} = File.read "resources/Customers.json"
+      Poison.decode!(json)["customers"]
+  end
   def get_product_list() do
     [
       %Product{ product_id: 1, product_name: "Chai", category: "Beverages", unit_price: 18.000, units_in_stock: 39 },
