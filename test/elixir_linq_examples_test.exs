@@ -50,6 +50,20 @@ defmodule ElixirLinqExamplesTest do
     #   for order <- customer["orders"]["order"], do: IO.puts "\tOrder #{order["id"]}: #{order["orderdate"]}"
     # end
 
-    assert (length wa_customers) > 0
+    assert length(wa_customers) > 0
+  end
+
+  test "linq5: Where - Indexed" do
+    digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+
+    short_digits = digits 
+      |> Stream.with_index
+      |> Stream.filter(fn {entry, index} -> String.length(entry) < index end)
+      |> Stream.map(fn {x,_} -> x end)
+      |> Enum.to_list
+
+    #for n <- short_digits, do: IO.puts "The word #{n} is shorter than its value"
+
+    assert length(short_digits) == 5
   end
 end
