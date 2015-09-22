@@ -1,4 +1,4 @@
-defmodule ElixirLinqExamplesTest do
+defmodule ElixirLinqExamples.Restriction do
   use ExUnit.Case
 
   import ElixirLinqExamples.Data
