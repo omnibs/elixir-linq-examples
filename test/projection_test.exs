@@ -110,8 +110,8 @@ defmodule ElixirLinqExamples.Projection do
 
     orders = 
       for c <- customers,
-          o <- c["orders"]["order"] || [],
-          do: %{customer_id: c["id"], order_id: o["id"], total: o["total"]}
+          o <- c.orders,
+          do: %{customer_id: c.id, order_id: o.id, total: o.total}
 
     #IO.inspect orders
 
@@ -123,9 +123,9 @@ defmodule ElixirLinqExamples.Projection do
 
     orders = 
       for c <- customers,
-          o <- c["orders"]["order"] || [],
-          Timex.Date.compare(elem(Timex.DateFormat.parse(o["orderdate"], "{ISOz}"), 1), Timex.Date.from({1998, 1, 1})) >= 0,
-          do: %{customer_id: c["id"], order_id: o["id"], total: o["total"]}
+          o <- c.orders,
+          Timex.Date.compare(elem(Timex.DateFormat.parse(o.orderdate, "{ISOz}"), 1), Timex.Date.from({1998, 1, 1})) >= 0,
+          do: %{customer_id: c.id, order_id: o.id, total: o.total}
 
     #IO.inspect orders
 
@@ -137,9 +137,9 @@ defmodule ElixirLinqExamples.Projection do
 
     orders = 
       for c <- customers,
-          o <- c["orders"]["order"] || [],
-          elem(Float.parse(o["total"]), 0) >= 2000.0,
-          do: %{customer_id: c["id"], order_id: o["id"], total: o["total"]}
+          o <- c.orders,
+          elem(Float.parse(o.total), 0) >= 2000.0,
+          do: %{customer_id: c.id, order_id: o.id, total: o.total}
 
     #IO.inspect orders
 
@@ -153,10 +153,10 @@ defmodule ElixirLinqExamples.Projection do
 
     orders = 
       for c <- customers,
-          o <- c["orders"]["order"] || [],
-          c["region"] == "WA",
-          Timex.Date.compare(elem(Timex.DateFormat.parse(o["orderdate"], "{ISOz}"), 1), cutoff_date) >= 0,
-          do: %{customer_id: c["id"], order_id: o["id"], total: o["total"]}
+          o <- c.orders,
+          c.region == "WA",
+          Timex.Date.compare(elem(Timex.DateFormat.parse(o.orderdate, "{ISOz}"), 1), cutoff_date) >= 0,
+          do: %{customer_id: c.id, order_id: o.id, total: o.total}
 
     #IO.inspect orders
 
@@ -170,10 +170,10 @@ defmodule ElixirLinqExamples.Projection do
 
     customerOrders = 
       for c <- Enum.with_index(customers),
-          o <- elem(c,0)["orders"]["order"] || [],
-          do: "Customer ##{elem(c,1) + 1} has an order with OrderId #{o["id"]}"
+          o <- elem(c,0).orders,
+          do: "Customer ##{elem(c,1) + 1} has an order with OrderId #{o.id}"
 
-    IO.inspect customerOrders
+    # IO.inspect customerOrders
 
     assert length(customerOrders) == 830
   end

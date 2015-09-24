@@ -42,7 +42,7 @@ defmodule ElixirLinqExamples.Restriction do
   test "linq4: Where - Drilldown" do
     customers = get_customer_list()
 
-    wa_customers = customers |> Enum.filter(fn x -> x["region"] == "WA" end)
+    wa_customers = customers |> Enum.filter(fn x -> x.region == "WA" end)
 
     # IO.puts "Customers from Washington and their orders:"
     # for customer <- wa_customers do

@@ -3,18 +3,11 @@ defmodule Product do
 end
 
 defmodule Order do
-  @derive [Poison.Encoder]
-  defstruct order_id: 0,order_date: "",total: 0.00
-end
-
-defmodule OrderList do
-  @derive [Poison.Encoder]
-  defstruct order: [%Order{}]
+  defstruct id: 0,orderdate: "",total: 0.00
 end
 
 defmodule Customer do
-  @derive [Poison.Encoder]
-  defstruct id: 0,name: "",address: "",city: "",region: "",postalcode: "",country: "",phone: "",fax: "",orders: %OrderList{}
+  defstruct id: 0,name: "",address: "",city: "",region: "",postalcode: "",country: "",phone: "",fax: "",orders: nil
 end
 
 # defmodule Order do

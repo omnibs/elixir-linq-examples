@@ -1,7 +1,18 @@
 defmodule ElixirLinqExamples.Data do
   def get_customer_list() do
-      {:ok, json} = File.read "resources/Customers.json"
-      Poison.decode!(json)["customers"]
+    {:ok, json} = File.read "resources/Customers.json"
+    decoded = Poison.decode!(json, keys: :atoms).customers
+    decoded |> Enum.map(&map_customer/1)
+  end
+  defp map_customer(x) do
+    customer = struct(Customer, x)
+
+    if customer.orders != nil && customer.orders.order != nil do
+      orders = Enum.map(customer.orders.order, fn o -> struct(Order, o) end)
+      %{customer | orders: orders}
+    else
+      %{customer | orders: []}
+    end
   end
   def get_product_list() do
     [
