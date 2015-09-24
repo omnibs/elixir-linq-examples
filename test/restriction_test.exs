@@ -50,7 +50,7 @@ defmodule ElixirLinqExamples.Restriction do
     #   for order <- customer["orders"]["order"], do: IO.puts "\tOrder #{order["id"]}: #{order["orderdate"]}"
     # end
 
-    assert length(wa_customers) > 0
+    assert 3 == length(wa_customers)
   end
 
   test "linq5: Where - Indexed" do
