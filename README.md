@@ -10,9 +10,9 @@ Compare Elixir to other LINQ examples written in:
  - [Swift](https://github.com/mythz/swift-linq-examples)
  - [Dart](https://github.com/mythz/dart-linq-examples)
 
-### Disclaimer
+### Pretty pretty please!
 
-I'm doing this as an exercise on learning Elixir, so my code might not be optimal. I welcome criticism and refactor suggestions, different approaches to queries, etc. :)
+Open an issue if you think I'm doing something stupid in any of the examples or if you have a better way of doing any of them. I'm beginning Elixir, as anyone who stumble here might also be, so this is whole point. :)
 
 ### Running the examples
 
@@ -26,13 +26,24 @@ Execute all of the examles with:
 
     mix test
 
+### Contents
+
+The samples below mirror the C# LINQ samples in the form of `ExUnit` unit tests with test names matching their corresponding C# examples.
+
+#### [LINQ - Restriction Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/restriction_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-to-DataSets-09787825)
+#### [LINQ - Projection Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/projection_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Partitioning-Operators-c68aaccc)
+#### [LINQ - Partitioning Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/partitioning_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/SQL-Ordering-Operators-050af19e)
+#### [LINQ - Ordering Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/ordering_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/SQL-Ordering-Operators-050af19e)
+#### [LINQ - Grouping Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/grouping_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-to-DataSets-Grouping-c62703ea)
+#### More to come...
+
 ### TODO
 
 - [x] Implement Restriction Operators examples
 - [x] Implement Projection Operators examples
 - [x] Implement Partitioning Operators examples
 - [x] Implement Ordering Operators examples
-- [ ] Implement Grouping Operators examples
+- [x] Implement Grouping Operators examples
 - [ ] Implement Set Operators examples
 - [ ] Implement Conversion Operators examples
 - [ ] Implement Element Operators examples
