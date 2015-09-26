@@ -119,7 +119,7 @@ defmodule ElixirLinqExamples.Ordering do
       |> Enum.sort(fn x,y -> String.downcase(x) >= String.downcase(y) end)
       |> Enum.sort_by &(String.length(&1))
 
-    IO.inspect sorted_words
+    # IO.inspect sorted_words
 
     assert ["aPPLE", "ClOvEr", "cHeRry", "bRaNcH", "AbAcUs", "BlUeBeRrY"] == sorted_words
   end

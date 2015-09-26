@@ -28,6 +28,20 @@ Execute all of the examles with:
 
 ### TODO
 
-* Finish all of the examples
-* When Poison 2.0 is out, change `get_customer_list/0` to return `struct`s
-* Use ericmj's Decimal
+- [x] Implement Restriction Operators examples
+- [x] Implement Projection Operators examples
+- [x] Implement Partitioning Operators examples
+- [x] Implement Ordering Operators examples
+- [ ] Implement Grouping Operators examples
+- [ ] Implement Set Operators examples
+- [ ] Implement Conversion Operators examples
+- [ ] Implement Element Operators examples
+- [ ] Implement Generation Operators examples
+- [ ] Implement Quantifiers / examples
+- [ ] Implement Aggregate Operators examples
+- [ ] Implement Miscellaneous Operators examples
+- [ ] Implement Query Execution examples
+- [ ] Implement Join Operators examples
+- [ ] Use ericmj's Decimal instead of Elixir's float
+- [ ] Make examples with `for`, `Enum.` and `Stream.` for every case
+- [ ] When Poison 2.0 is out, change `get_customer_list/0` code to use it's nested structs support

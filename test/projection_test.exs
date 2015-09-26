@@ -124,7 +124,7 @@ defmodule ElixirLinqExamples.Projection do
     orders = 
       for c <- customers,
           o <- c.orders,
-          Timex.Date.compare(elem(Timex.DateFormat.parse(o.orderdate, "{ISOz}"), 1), Timex.Date.from({1998, 1, 1})) >= 0,
+          Timex.Date.compare(o.orderdate, Timex.Date.from({1998, 1, 1})) >= 0,
           do: %{customer_id: c.id, order_id: o.id, total: o.total}
 
     #IO.inspect orders
@@ -155,7 +155,7 @@ defmodule ElixirLinqExamples.Projection do
       for c <- customers,
           o <- c.orders,
           c.region == "WA",
-          Timex.Date.compare(elem(Timex.DateFormat.parse(o.orderdate, "{ISOz}"), 1), cutoff_date) >= 0,
+          Timex.Date.compare(o.orderdate, cutoff_date) >= 0,
           do: %{customer_id: c.id, order_id: o.id, total: o.total}
 
     #IO.inspect orders
