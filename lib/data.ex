@@ -1,9 +1,21 @@
 defmodule ElixirLinqExamples.Data do
   def get_customer_list() do
+    Agent.get(__MODULE__, &(&1))
+  end
+
+  @doc """
+  Creates an agent that caches the list of customers. Reading them in every test made the tests run too slot.
+  """
+  def cache_customer_list() do
+    Agent.start_link(fn -> read_customer_list() end, name: __MODULE__)
+  end
+
+  defp read_customer_list() do
     {:ok, json} = File.read "resources/Customers.json"
     decoded = Poison.decode!(json, keys: :atoms).customers
     decoded |> Enum.map(&map_customer/1)
   end
+
   defp map_customer(x) do
     customer = struct(Customer, x)
 
