@@ -35,6 +35,7 @@ The samples below mirror the C# LINQ samples in the form of `ExUnit` unit tests 
 #### [LINQ - Partitioning Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/partitioning_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/SQL-Ordering-Operators-050af19e)
 #### [LINQ - Ordering Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/ordering_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/SQL-Ordering-Operators-050af19e)
 #### [LINQ - Grouping Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/grouping_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-to-DataSets-Grouping-c62703ea)
+#### [LINQ - Set Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/set_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Set-Operators-374f34fe)
 #### More to come...
 
 ### TODO
@@ -44,7 +45,7 @@ The samples below mirror the C# LINQ samples in the form of `ExUnit` unit tests 
 - [x] Implement Partitioning Operators examples
 - [x] Implement Ordering Operators examples
 - [x] Implement Grouping Operators examples
-- [ ] Implement Set Operators examples
+- [x] Implement Set Operators examples
 - [ ] Implement Conversion Operators examples
 - [ ] Implement Element Operators examples
 - [ ] Implement Generation Operators examples
