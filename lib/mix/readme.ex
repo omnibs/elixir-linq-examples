@@ -45,7 +45,7 @@ defmodule Mix.Tasks.Readme do
           end) 
 
         # remember to add "LINQ - whatever Operators" to the beginning of the segment
-        "LINQ - #{String.capitalize(fname)} Operators\n" <> examples
+        "LINQ - #{String.capitalize(fname)} Operators" <> examples
       _ -> ""
     end
   end

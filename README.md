@@ -60,7 +60,6 @@ For a side-by-side comparison, the original **C#** source code is displayed abov
   - The C# ObjectDumper util used is downloadable from MSDN - [ObjectDumper.zip](http://code.msdn.microsoft.com/Visual-Studio-2008-C-d295cdba/file/46086/1/ObjectDumper.zip)
 
 LINQ - Restriction Operators
-
 ----------------------------
 ### linq1: Where - Simple 1
 
@@ -281,7 +280,6 @@ end
     The word nine is shorter than its value
 
 LINQ - Projection Operators
-
 ---------------------------
 ### linq6: Select - Simple 1
 ```csharp
@@ -900,7 +898,6 @@ end
     Customer #2 has an order with OrderID 10926
     ...
 LINQ - Partitioning Operators
-
 -----------------------------
 ### linq20: Take - Simple
 ```csharp
@@ -1246,7 +1243,6 @@ end
     0
 
 LINQ - Ordering Operators
-
 -------------------------
 ### C# utils added
 
@@ -1742,7 +1738,6 @@ end
     six
     five
 LINQ - Grouping Operators
-
 -------------------------
 ### C# utils added
 
@@ -2061,7 +2056,6 @@ end
     [ EARN   NEAR ]
 
 LINQ - Set Operators
-
 --------------------
 ### linq46: Distinct - 1
 ```csharp
