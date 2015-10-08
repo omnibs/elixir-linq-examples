@@ -26,8 +26,6 @@ defmodule ElixirLinqExamples.Projection do
 
   test "linq8: Select - Transformation" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0];
-
-    # using tuples here since lists are not suposed to be accessed by index
     strings = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
 
     text_nums = numbers |> Enum.map(&(elem(strings,&1)))
