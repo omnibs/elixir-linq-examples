@@ -2075,7 +2075,16 @@ public void Linq46()
 ```
 ```elixir
 # elixir
+test "linq46: Distinct - 1" do
+  factors_of_300 = [2, 2, 3, 5, 5]
 
+  unique_factors = factors_of_300 |> Enum.uniq
+
+   IO.puts "Prime factors of 300:"
+   for f <- unique_factors, do: IO.puts f
+
+  assert [2,3,5] == unique_factors
+end
 ```
 #### Output
 

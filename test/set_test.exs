@@ -3,7 +3,7 @@ defmodule ElixirLinqExamples.Set do
 
   import ElixirLinqExamples.Data
   
-  test "linq46: Distinct 1" do
+  test "linq46: Distinct - 1" do
     factors_of_300 = [2, 2, 3, 5, 5]
 
     unique_factors = factors_of_300 |> Enum.uniq
