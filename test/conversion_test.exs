@@ -1,8 +1,6 @@
 defmodule ElixirLinqExamples.Conversion do
   use ExUnit.Case
 
-  import ElixirLinqExamples.Data
-
   test "linq54: ToArray" do
     doubles = [1.7, 2.3, 1.9, 4.1, 2.9];
     

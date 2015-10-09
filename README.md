@@ -2607,3 +2607,157 @@ end
     1.0
     7.0
 
+LINQ - Element Operators
+------------------------
+
+### linq58: First - Simple
+```csharp
+//c#
+public void Linq58()
+{
+    List<Product> products = GetProductList();
+
+    Product product12 = (
+        from p in products
+        where p.ProductID == 12
+        select p)
+        .First();
+
+    ObjectDumper.Write(product12);
+}
+```
+```elixir
+# elixir
+test "linq58: First - Simple" do
+  products = get_product_list()
+
+  product12 = products |> Enum.filter(fn x -> x.product_id == 12 end) |> Enum.at(0)
+
+  IO.inspect product12
+
+  assert "Queso Manchego La Pastora" == product12.product_name
+end
+```
+#### Output
+
+    #clj_linq.data.Product{:product-id 12, :product-name Queso Manchego La Pastora, :category Dairy Products, :unit-price 38.0, :units-in-stock 86}
+
+### linq59: First - Condition
+```csharp
+//c#
+public void Linq59()
+{
+    string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+
+    string startsWithO = strings.First(s => s[0] == 'o');
+
+    Console.WriteLine("A string starting with 'o': {0}", startsWithO);
+}
+```
+```elixir
+# elixir
+test "linq59: First - Condition" do
+  strings = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+
+  starts_with_o = strings |> Enum.find(fn x -> String.at(x, 0) == "o" end)
+
+  IO.puts "A string starting with 'o': #{starts_with_o}"
+
+  assert "one" == starts_with_o
+end
+```
+#### Output
+
+    A string starting with 'o': one
+
+### linq61: FirstOrDefault - Simple
+```csharp
+//c#
+public void Linq61()
+{
+    int[] numbers = { };
+
+    int firstNumOrDefault = numbers.FirstOrDefault();
+
+    Console.WriteLine(firstNumOrDefault);
+}
+```
+```elixir
+# elixir
+test "linq61: FirstOrDefault - Simple" do
+  numbers = []
+
+  first_num_or_default = numbers |> Enum.at(0, 0)
+
+  IO.puts first_num_or_default
+
+  assert 0 == first_num_or_default
+end
+```
+#### Output
+
+    0
+
+### linq62: FirstOrDefault - Condition
+```csharp
+//c#
+public void Linq62()
+{
+    List<Product> products = GetProductList();
+
+    Product product789 = products.FirstOrDefault(p => p.ProductID == 789);
+
+    Console.WriteLine("Product 789 exists: {0}", product789 != null);
+}
+```
+```elixir
+# elixir
+test "linq62: FirstOrDefault - Condition" do
+  products = get_product_list()
+
+  product789 = products |> Enum.find fn x -> x.product_id == 789 end
+
+  IO.puts "Product 789 exists: #{product789 != nil}"
+
+  assert product789 == nil
+end
+```
+#### Output
+
+    Product 789 exists: false
+
+### linq64: ElementAt
+```csharp
+//c#
+public void Linq64()
+{
+    int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+
+    int fourthLowNum = (
+        from n in numbers
+        where n > 5
+        select n)
+        .ElementAt(1);  // second number is index 1 because sequences use 0-based indexing
+
+    Console.WriteLine("Second number > 5: {0}", fourthLowNum);
+}
+```
+```elixir
+# elixir
+test "linq64: ElementAt" do
+  numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+
+  fourth_low_num = numbers
+    |> Enum.filter(fn x -> x > 5 end)
+    |> Enum.at(1)
+
+  IO.puts "Second number > 5: #{fourth_low_num}"
+
+  assert 8 == fourth_low_num
+end
+```
+#### Output
+
+    Second number > 5: 8
+
+
