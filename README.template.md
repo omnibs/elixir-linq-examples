@@ -14,7 +14,7 @@ This is not a comparison with Ecto. My goal is translating LINQ examples to `for
 
 ### Pretty pretty please!
 
-Open an issue if you think I'm doing something stupid in any of the examples or if you have a better way of doing any of them. I'm beginning Elixir, as anyone who stumble here might also be, so this is whole point. :)
+Open an issue if you think I'm doing something stupid in any of the examples or if you have a better way of doing any of them. I'm beginning Elixir, as anyone who stumble here might also be, so this is the whole point. :)
 
 ### Running the examples
 
