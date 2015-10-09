@@ -2761,3 +2761,180 @@ end
     Second number > 5: 8
 
 
+LINQ - Generation Operators
+---------------------------
+
+### linq65: Range
+```csharp
+//c#
+public void Linq65()
+{
+    var numbers =
+        from n in Enumerable.Range(100, 50)
+
+        select new { Number = n, OddEven = n % 2 == 1 ? "odd" : "even" };
+
+    foreach (var n in numbers)
+    {
+        Console.WriteLine("The number {0} is {1}.", n.Number, n.OddEven);
+    }
+}
+```
+```elixir
+# elixir
+test "linq65: Range" do
+  require Integer
+
+  numbers = 100..151
+    |> Enum.map fn x -> %{number: x, odd_even: if(Integer.is_odd(x), do: "odd", else: "even")} end
+
+  for n <- numbers, do: IO.puts "The number #{n.number} is #{n.odd_even}"
+
+  assert "even" == hd(numbers).odd_even && "odd" == Enum.at(numbers, 1).odd_even
+end
+```
+#### Output
+
+    The number 100 is even
+    The number 101 is odd
+    The number 102 is even
+    The number 103 is odd
+    The number 104 is even
+    The number 105 is odd
+    The number 106 is even
+    The number 107 is odd
+    The number 108 is even
+    The number 109 is odd
+    The number 110 is even
+    ...
+
+### linq66: Repeat
+```csharp
+//c#
+public void Linq66()
+{
+    var numbers = Enumerable.Repeat(7, 10);
+
+    foreach (var n in numbers)
+    {
+        Console.WriteLine(n);
+    }
+}
+```
+```elixir
+# elixir
+test "linq66: Repeat" do
+  numbers = List.duplicate(7, 10)
+
+  for n <- numbers, do: IO.puts n
+
+  assert 10 == length(numbers)
+end
+```
+#### Output
+
+    7
+    7
+    7
+    7
+    7
+    7
+    7
+    7
+    7
+    7
+
+
+LINQ - Quantifiers
+------------------
+
+### linq67: Any - Simple
+```csharp
+//c#
+public void Linq67()
+{
+    string[] words = { "believe", "relief", "receipt", "field" };
+
+    bool iAfterE = words.Any(w => w.Contains("ei"));
+
+    Console.WriteLine("There is a word that contains in the list that contains 'ei': {0}", iAfterE);
+}
+```
+```elixir
+# elixir
+
+```
+#### Output
+
+    There is a word that contains in the list that contains 'ei': true
+
+### linq69: Any - Grouped
+```csharp
+//c#
+public void Linq69()
+{
+    List<Product> products = GetProductList();
+    var productGroups =
+        from p in products
+        group p by p.Category into g
+        where g.Any(p => p.UnitsInStock == 0)
+        select new { Category = g.Key, Products = g };
+
+    ObjectDumper.Write(productGroups, 1);
+}
+```
+```elixir
+# elixir
+
+```
+#### Output
+
+    {:category Condiments, :products [#clj_linq.data.Product{:product-id 3, :product-name Aniseed Syrup, :category Condiments, :unit-price 10.0, :units-in-stock 13} #clj_linq.data.Product{:product-id 4, :product-name Chef Anton's Cajun Seasoning, :category Condiments, :unit-price 22.0, :units-in-stock 53} #clj_linq.data.Product{:product-id 5, :product-name Chef Anton's Gumbo Mix, :category Condiments, :unit-price 21.35, :units-in-stock 0} #clj_linq.data.Product{:product-id 6, :product-name Grandma's Boysenberry Spread, :category Condiments, :unit-price 25.0, :units-in-stock 120} #clj_linq.data.Product{:product-id 8, :product-name Northwoods Cranberry Sauce, :category Condiments, :unit-price 40.0, :units-in-stock 6} #clj_linq.data.Product{:product-id 15, :product-name Genen Shouyu, :category Condiments, :unit-price 15.5, :units-in-stock 39} #clj_linq.data.Product{:product-id 44, :product-name Gula Malacca, :category Condiments, :unit-price 19.45, :units-in-stock 27} #clj_linq.data.Product{:product-id 61, :product-name Sirop d'érable, :category Condiments, :unit-price 28.5, :units-in-stock 113} #clj_linq.data.Product{:product-id 63, :product-name Vegie-spread, :category Condiments, :unit-price 43.9, :units-in-stock 24} #clj_linq.data.Product{:product-id 65, :product-name Louisiana Fiery Hot Pepper Sauce, :category Condiments, :unit-price 21.05, :units-in-stock 76} #clj_linq.data.Product{:product-id 66, :product-name Louisiana Hot Spiced Okra, :category Condiments, :unit-price 17.0, :units-in-stock 4} #clj_linq.data.Product{:product-id 77, :product-name Original Frankfurter grüne Soße, :category Condiments, :unit-price 13.0, :units-in-stock 32}]}
+    ...
+
+### linq70: All - Simple
+```csharp
+//c#
+public void Linq70()
+{
+    int[] numbers = { 1, 11, 3, 19, 41, 65, 19 };
+
+    bool onlyOdd = numbers.All(n => n % 2 == 1);
+
+    Console.WriteLine("The list contains only odd numbers: {0}", onlyOdd);
+}
+```
+```elixir
+# elixir
+
+```
+#### Output
+
+    The list contains only odd numbers: true
+
+### linq72: All - Grouped
+```csharp
+//c#
+public void Linq72()
+{
+    List<Product> products = GetProductList();
+
+    var productGroups =
+        from p in products
+        group p by p.Category into g
+        where g.All(p => p.UnitsInStock > 0)
+        select new { Category = g.Key, Products = g };
+
+    ObjectDumper.Write(productGroups, 1);
+}
+```
+```elixir
+# elixir
+
+```
+#### Output
+
+    {:category Beverages, :products [#clj_linq.data.Product{:product-id 1, :product-name Chai, :category Beverages, :unit-price 18.0, :units-in-stock 39} #clj_linq.data.Product{:product-id 2, :product-name Chang, :category Beverages, :unit-price 19.0, :units-in-stock 17} #clj_linq.data.Product{:product-id 24, :product-name Guaraná Fantástica, :category Beverages, :unit-price 4.5, :units-in-stock 20} #clj_linq.data.Product{:product-id 34, :product-name Sasquatch Ale, :category Beverages, :unit-price 14.0, :units-in-stock 111} #clj_linq.data.Product{:product-id 35, :product-name Steeleye Stout, :category Beverages, :unit-price 18.0, :units-in-stock 20} #clj_linq.data.Product{:product-id 38, :product-name Côte de Blaye, :category Beverages, :unit-price 263.5, :units-in-stock 17} #clj_linq.data.Product{:product-id 39, :product-name Chartreuse verte, :category Beverages, :unit-price 18.0, :units-in-stock 69} #clj_linq.data.Product{:product-id 43, :product-name Ipoh Coffee, :category Beverages, :unit-price 46.0, :units-in-stock 17} #clj_linq.data.Product{:product-id 67, :product-name Laughing Lumberjack Lager, :category Beverages, :unit-price 14.0, :units-in-stock 52} #clj_linq.data.Product{:product-id 70, :product-name Outback Lager, :category Beverages, :unit-price 15.0, :units-in-stock 15} #clj_linq.data.Product{:product-id 75, :product-name Rhönbräu Klosterbier, :category Beverages, :unit-price 7.75, :units-in-stock 125} #clj_linq.data.Product{:product-id 76, :product-name Lakkalikööri, :category Beverages, :unit-price 18.0, :units-in-stock 57}]}
+    ...
+
+
