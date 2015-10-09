@@ -39,7 +39,7 @@ defmodule Mix.Tasks.Readme do
           fn (whole_block, csharp_block, test_name, clojure_block, output_block) ->
             elixir_example = "```elixir\r\n# elixir\r\n#{tests_and_names[test_name]}\r\n```\r\n"
             elixir_example = Regex.replace(~r/^  /m, elixir_example, "")
-            elixir_example = Regex.replace(~r/^( +)#/m, elixir_example, "\\g{1}")
+            elixir_example = Regex.replace(~r/^( +)# ?/m, elixir_example, "\\g{1}")
 
             Enum.join([csharp_block, elixir_example, output_block])
           end) 

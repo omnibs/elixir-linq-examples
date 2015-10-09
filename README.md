@@ -217,11 +217,11 @@ test "linq4: Where - Drilldown" do
 
   wa_customers = customers |> Enum.filter(fn x -> x.region == "WA" end)
 
-   IO.puts "Customers from Washington and their orders:"
-   for customer <- wa_customers do
-     IO.puts "Customer #{customer["id"]}: #{customer["name"]}"
-     for order <- customer["orders"]["order"], do: IO.puts "\tOrder #{order["id"]}: #{order["orderdate"]}"
-   end
+  IO.puts "Customers from Washington and their orders:"
+  for customer <- wa_customers do
+    IO.puts "Customer #{customer["id"]}: #{customer["name"]}"
+    for order <- customer["orders"]["order"], do: IO.puts "\tOrder #{order["id"]}: #{order["orderdate"]}"
+  end
 
   assert 3 == length(wa_customers)
 end
@@ -305,8 +305,8 @@ test "linq6: Select - Simple 1" do
   numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0];
   num_plus_one = numbers |> Enum.map(&(&1+1))
 
-   IO.puts "Numbers + 1:"
-   for n <- num_plus_one, do: IO.puts n
+  IO.puts "Numbers + 1:"
+  for n <- num_plus_one, do: IO.puts n
 
   assert [6 ,5 ,2 ,4 ,10 ,9 ,7 ,8 ,3 ,1] == num_plus_one
 end
@@ -350,8 +350,8 @@ test "linq7: Select - Simple 2" do
 
   product_names = products |> Enum.map(&(&1.product_name))
 
-   IO.puts "Product Names:"
-   for n <- product_names, do: IO.puts n
+  IO.puts "Product Names:"
+  for n <- product_names, do: IO.puts n
 
   assert Enum.all?(product_names, &is_binary/1)
 end
@@ -393,8 +393,8 @@ test "linq8: Select - Transformation" do
 
   text_nums = numbers |> Enum.map(&(elem(strings,&1)))
 
-   IO.puts "Number strings:"
-   for n <- text_nums, do: IO.puts n
+  IO.puts "Number strings:"
+  for n <- text_nums, do: IO.puts n
 
   assert Enum.all?(text_nums, &is_binary/1)
 end
@@ -437,7 +437,7 @@ test "linq9: Select - Anonymous Types 1" do
 
   upper_lower_words = words |> Enum.map(fn x -> %{lower: String.downcase(x), upper: String.capitalize(x)} end)
 
-   for n <- upper_lower_words, do: IO.puts "Uppercase: #{n.upper}, Lowercase: #{n.lower}" end
+  for n <- upper_lower_words, do: IO.puts "Uppercase: #{n.upper}, Lowercase: #{n.lower}" end
 end
 ```
 #### Output
@@ -472,7 +472,7 @@ test "linq10: Select - Anonymous Types 2" do
 
   digit_odd_evens = numbers |> Enum.map(fn x -> %{digit: elem(strings, x), even: rem(x, 2) == 0} end)
 
-   for n <- digit_odd_evens, do: IO.puts "The digit #{n.digit} is #{n.even && "even" || "odd"}."
+  for n <- digit_odd_evens, do: IO.puts "The digit #{n.digit} is #{n.even && "even" || "odd"}."
 
   assert Enum.count(digit_odd_evens, &(&1.even)) == 5
 end
@@ -515,7 +515,7 @@ test "linq11: Select - Anonymous Types 3" do
 
   product_infos = products |> Enum.map(fn x -> %{product_name: x.product_name, category: x.category, price: x.unit_price} end)
 
-   for n <- product_infos, do: IO.puts "#{n.product_name} is in the category #{n.category} and costs #{n.price} per unit."
+  for n <- product_infos, do: IO.puts "#{n.product_name} is in the category #{n.category} and costs #{n.price} per unit."
 
   assert Enum.all?(product_infos, fn x -> is_number(x.price) end)
 end
@@ -554,8 +554,8 @@ test "linq12: Select - Indexed" do
     |> Stream.map(fn {x,idx} -> %{num: x, in_place: x == idx} end) 
     |> Enum.to_list
 
-   IO.puts "Number: In-place?"
-   for n <- nums_in_place, do: IO.puts "#{n.num}: #{n.in_place}"
+  IO.puts "Number: In-place?"
+  for n <- nums_in_place, do: IO.puts "#{n.num}: #{n.in_place}"
 
   assert 3 = Enum.count(nums_in_place, fn x -> x.in_place end)
 end
@@ -602,8 +602,8 @@ test "linq13: Select - Filtered" do
 
   low_nums = for n <- numbers, n < 5, do: elem(strings, n)
 
-   IO.puts "Numbers < 5:"
-   for n <- low_nums, do: IO.puts n
+  IO.puts "Numbers < 5:"
+  for n <- low_nums, do: IO.puts n
 
   assert 5 = length(low_nums)
 end
@@ -646,8 +646,8 @@ test "linq14: SelectMany - Compound from 1" do
 
   pairs = for a <- numbers_a, b <- numbers_b, a < b, do: %{a: a, b: b}
 
-   IO.puts "Pairs where a < b:"
-   for n <- pairs, do: IO.puts "#{n.a} is less than #{n.b}"
+  IO.puts "Pairs where a < b:"
+  for n <- pairs, do: IO.puts "#{n.a} is less than #{n.b}"
 
   assert 16 == length(pairs)
 end
@@ -879,7 +879,7 @@ test "linq19: SelectMany - Indexed" do
         o <- elem(c,0).orders,
         do: "Customer ##{elem(c,1) + 1} has an order with OrderId #{o.id}"
 
-   IO.inspect customerOrders
+  IO.inspect customerOrders
 
   assert length(customerOrders) == 830
 end
@@ -923,8 +923,8 @@ test "linq20: Take - Simple" do
 
   first_3_numbers = numbers |> Enum.take 3
 
-   IO.puts "First 3 numbers:"
-   for n <- first_3_numbers, do: IO.puts n
+  IO.puts "First 3 numbers:"
+  for n <- first_3_numbers, do: IO.puts n
 
   assert 3 == length(first_3_numbers)
 end
@@ -969,8 +969,8 @@ test "linq21: Take - Nested" do
         do: %{customer_id: c.id, order_id: o.id, order_date: o.orderdate})
     |> Enum.take 3
 
-   IO.puts "First 3 orders in WA:"
-   for o <- first_3_wa_orders, do: IO.inspect(o)
+  IO.puts "First 3 orders in WA:"
+  for o <- first_3_wa_orders, do: IO.inspect(o)
 
   assert 3 == length(first_3_wa_orders)
 end
@@ -1005,8 +1005,8 @@ test "linq22: Skip - Simple" do
 
   all_but_first_4_numbers = numbers |> Enum.drop 4
 
-   IO.puts "All but first 4 numbers:"
-   for n <- numbers, do: IO.puts n
+  IO.puts "All but first 4 numbers:"
+  for n <- numbers, do: IO.puts n
 
   assert 6 == length(all_but_first_4_numbers)
 end
@@ -1056,8 +1056,8 @@ test "linq23: Skip - Nested" do
 
   all_but_first_2_orders = wa_orders |> Enum.drop 2
 
-   IO.puts "All but first 2 orders in WA:"
-   for o <- all_but_first_2_orders, do: IO.inspect o
+  IO.puts "All but first 2 orders in WA:"
+  for o <- all_but_first_2_orders, do: IO.inspect o
 
   assert 17 == length all_but_first_2_orders
 end
@@ -1106,8 +1106,8 @@ test "linq24: TakeWhile - Simple" do
 
   first_numbers_less_than_6 = numbers |> Enum.take_while fn x -> x < 6 end
 
-   IO.puts "First numbers less than 6:"
-   for n <- first_numbers_less_than_6, do: IO.puts n
+  IO.puts "First numbers less than 6:"
+  for n <- first_numbers_less_than_6, do: IO.puts n
 
   assert 4 == length(first_numbers_less_than_6)
 end
@@ -1146,8 +1146,8 @@ test "linq25: TakeWhile - Indexed" do
     |> Enum.take_while(fn {n, index} -> n >= index end)
     |> Enum.map(fn {x,_} -> x end)
 
-   IO.puts "First numbers not less than their position:"
-   for n <- first_small_numbers, do: IO.puts n
+  IO.puts "First numbers not less than their position:"
+  for n <- first_small_numbers, do: IO.puts n
 
   assert 2 == length(first_small_numbers)
 end
@@ -1181,8 +1181,8 @@ test "linq26: SkipWhile - Simple" do
 
   all_but_first_3_numbers = numbers |> Enum.drop_while fn x -> rem(x, 3) != 0 end
 
-   IO.puts "All elements starting from first element divisible by 3:"
-   for n <- all_but_first_3_numbers, do: IO.puts n
+  IO.puts "All elements starting from first element divisible by 3:"
+  for n <- all_but_first_3_numbers, do: IO.puts n
 
   assert 7 == length(all_but_first_3_numbers)
 end
@@ -1224,8 +1224,8 @@ test "linq27: SkipWhile - Indexed" do
     |> Enum.drop_while(fn {n, index} -> n >= index end)
     |> Enum.map(fn {x,_} -> x end)
 
-   IO.puts "All elements starting from first element less than its position:"
-   for n <- later_numbers, do: IO.puts n
+  IO.puts "All elements starting from first element less than its position:"
+  for n <- later_numbers, do: IO.puts n
 
   assert 8 == length(later_numbers)
 end
@@ -1300,8 +1300,8 @@ test "linq28: OrderBy - Simple 1" do
   words = ["cherry", "apple", "blueberry"]
   sorted_words = words |> Enum.sort
 
-   IO.puts "The sorted list of words:"
-   for w <- words, do: IO.puts w
+  IO.puts "The sorted list of words:"
+  for w <- words, do: IO.puts w
 
   assert ["apple", "blueberry", "cherry"] == sorted_words
 end
@@ -1338,8 +1338,8 @@ test "linq29: OrderBy - Simple 2" do
   words = ["cherry", "apple", "blueberry"]
   sorted_words = words |> Enum.sort_by(&String.length/1)
 
-   IO.puts "The sorted list of words (by length):"
-   for w <- words, do: IO.puts w
+  IO.puts "The sorted list of words (by length):"
+  for w <- words, do: IO.puts w
 
   assert ["apple", "cherry", "blueberry"] == sorted_words
 end
@@ -1374,7 +1374,7 @@ test "linq30: OrderBy - Simple 3" do
   sorted_products = products 
     |> Enum.sort_by(fn x -> x.product_name end)
 
-   IO.inspect sorted_products
+  IO.inspect sorted_products
 
   assert 17 == hd(sorted_products).product_id
 end
@@ -1407,7 +1407,7 @@ test "linq31: OrderBy - Comparer" do
 
   sorted_words = words |> Enum.sort_by &String.downcase/1
 
-   IO.inspect sorted_words
+  IO.inspect sorted_words
 
   assert "AbAcUs" == hd(sorted_words)
 end
@@ -1447,8 +1447,8 @@ test "linq32: OrderByDescending - Simple 1" do
 
   sorted_doubles = doubles |> Enum.sort |> Enum.reverse
 
-   IO.puts "The doubles from highest to lowest:"
-   for d <- sorted_doubles, do: IO.puts d
+  IO.puts "The doubles from highest to lowest:"
+  for d <- sorted_doubles, do: IO.puts d
 
   assert 4.1 == hd(sorted_doubles)
 end
@@ -1484,7 +1484,7 @@ test "linq33: OrderByDescending - Simple 2" do
 
   sorted_products = products |> Enum.sort &(&1.units_in_stock >= &2.units_in_stock)
 
-   IO.inspect sorted_products
+  IO.inspect sorted_products
 
   assert 75 == hd(sorted_products).product_id
 end
@@ -1517,7 +1517,7 @@ test "linq34: OrderByDescending - Comparer" do
 
   sorted_words = words |> Enum.sort &(String.downcase(&1) >= String.downcase(&2))
 
-   IO.inspect sorted_words
+  IO.inspect sorted_words
 
   assert "ClOvEr" == hd(sorted_words)
 end
@@ -1559,8 +1559,8 @@ test "linq35: ThenBy - Simple" do
     |> Enum.sort 
     |> Enum.sort_by(fn x -> String.length(x) end)
 
-   IO.puts "Sorted digits:"
-   for d <- sorted_digits, do: IO.puts d
+  IO.puts "Sorted digits:"
+  for d <- sorted_digits, do: IO.puts d
 
   assert ["one", "six", "two", "five", "four", "nine", "zero", "eight", "seven", "three"] == sorted_digits
 end
@@ -1602,7 +1602,7 @@ test "linq36: ThenBy - Comparer" do
     |> Enum.sort_by(&String.downcase/1) 
     |> Enum.sort_by(&String.length/1)
 
-   IO.inspect sorted_words
+  IO.inspect sorted_words
 
   assert ["aPPLE", "AbAcUs", "bRaNcH", "cHeRry", "ClOvEr", "BlUeBeRrY"] == sorted_words
 end
@@ -1640,7 +1640,7 @@ test "linq37: ThenByDescending - Simple" do
     |> Enum.sort(fn x,y -> x.unit_price >= y.unit_price end)
     |> Enum.sort_by(&(&1.category))
 
-   IO.inspect sorted_products
+  IO.inspect sorted_products
 
   assert 38 == hd(sorted_products).product_id
 end
@@ -1681,7 +1681,7 @@ test "linq38: ThenByDescending - Comparer" do
     |> Enum.sort(fn x,y -> String.downcase(x) >= String.downcase(y) end)
     |> Enum.sort_by &(String.length(&1))
 
-   IO.inspect sorted_words
+  IO.inspect sorted_words
 
   assert ["aPPLE", "ClOvEr", "cHeRry", "bRaNcH", "AbAcUs", "BlUeBeRrY"] == sorted_words
 end
@@ -1724,8 +1724,8 @@ test "linq39: Reverse" do
     |> Enum.filter(fn x -> String.at(x, 1) == "i" end)
     |> Enum.reverse
 
-   IO.puts "A backwards list of the digits with a second character of 'i':"
-   for d <- reversed_i_digits, do: IO.puts d
+  IO.puts "A backwards list of the digits with a second character of 'i':"
+  for d <- reversed_i_digits, do: IO.puts d
 
   assert ["nine", "eight", "six", "five"] == reversed_i_digits
 end
@@ -1800,10 +1800,10 @@ test "linq40: GroupBy - Simple 1" do
     |> Enum.group_by(fn x -> rem(x, 5) end)
     |> Enum.map fn x -> %{remainder: elem(x,0), numbers: elem(x, 1)} end
 
-   for g <- number_groups do
-     IO.puts "Numbers with a remainder of #{g.remainder} when divided by 5:"
-     for n <- g.numbers, do: IO.puts n
-   end
+  for g <- number_groups do
+    IO.puts "Numbers with a remainder of #{g.remainder} when divided by 5:"
+    for n <- g.numbers, do: IO.puts n
+  end
 
   assert 5 == length(number_groups)
 end
@@ -1857,10 +1857,10 @@ test "linq41: GroupBy - Simple 2" do
     |> Enum.group_by(fn x -> String.at(x, 0) end)
     |> Enum.map fn x -> %{first_letter: elem(x, 0), words: elem(x, 1)} end
 
-   for g <- word_groups do
-     IO.puts "Words that start with the letter '#{g.first_letter}'"
-     for w <- g.words, do: IO.puts w
-   end
+  for g <- word_groups do
+    IO.puts "Words that start with the letter '#{g.first_letter}'"
+    for w <- g.words, do: IO.puts w
+  end
 
   assert 3 == length(word_groups)
 end
@@ -1901,7 +1901,7 @@ test "linq42: GroupBy - Simple 3" do
     |> Enum.group_by(fn x -> x.category end)
     |> Enum.map fn x -> %{category: elem(x,0), products: elem(x,1)} end
 
-   IO.inspect order_groups
+  IO.inspect order_groups
 
   assert 8 == length(order_groups)
 end
@@ -1967,7 +1967,7 @@ test "linq43: GroupBy - Nested" do
         }
       end)
 
-   IO.inspect customer_order_groups, limit: 10, pretty: true
+  IO.inspect customer_order_groups, limit: 10, pretty: true
 
   assert 91 == length(customer_order_groups)
 end
@@ -2002,7 +2002,7 @@ test "linq44: GroupBy - Comparer" do
         |> Enum.sort 
       end)
 
-   for g <- order_groups, do: IO.inspect elem(g, 1)
+  for g <- order_groups, do: IO.inspect elem(g, 1)
 
   assert 3 == Map.size(order_groups)
 end
@@ -2080,8 +2080,8 @@ test "linq46: Distinct - 1" do
 
   unique_factors = factors_of_300 |> Enum.uniq
 
-   IO.puts "Prime factors of 300:"
-   for f <- unique_factors, do: IO.puts f
+  IO.puts "Prime factors of 300:"
+  for f <- unique_factors, do: IO.puts f
 
   assert [2,3,5] == unique_factors
 end
@@ -2119,8 +2119,8 @@ test "linq47: Distinct - 2" do
 
   category_names = products |> Enum.map(fn x -> x.category end) |> Enum.uniq
 
-   IO.puts "Category names:"
-   for c <- category_names, do: IO.puts c
+  IO.puts "Category names:"
+  for c <- category_names, do: IO.puts c
 
   assert 8 == length(category_names)
 end
@@ -2162,8 +2162,8 @@ test "linq48: Union - 1" do
 
   unique_numbers = Set.union(Enum.into(numbers_a, HashSet.new), Enum.into(numbers_b, HashSet.new)) |> Enum.sort
 
-   IO.puts "Unique numbers from both arrays:"
-   for n <- unique_numbers, do: IO.puts n
+  IO.puts "Unique numbers from both arrays:"
+  for n <- unique_numbers, do: IO.puts n
 
   assert 10 == length(unique_numbers)
 end
@@ -2219,8 +2219,8 @@ test "linq49: Union - 2" do
 
   unique_first_chars = Set.union(Enum.into(product_first_chars, HashSet.new), Enum.into(customer_first_chars, HashSet.new)) |> Enum.sort
 
-   IO.puts "Unique first letters from Product names and Customer names:"
-   for c <- unique_first_chars, do: IO.puts c
+  IO.puts "Unique first letters from Product names and Customer names:"
+  for c <- unique_first_chars, do: IO.puts c
 
   assert 24 == length(unique_first_chars)
 end
@@ -2278,8 +2278,8 @@ test "linq50: Intersect - 1" do
 
   common_numbers = Set.intersection(Enum.into(numbers_a, HashSet.new), Enum.into(numbers_b, HashSet.new)) |> Enum.sort
 
-   IO.puts "Common numbers shared by both arrays:"
-   for n <- common_numbers, do: IO.puts n
+  IO.puts "Common numbers shared by both arrays:"
+  for n <- common_numbers, do: IO.puts n
 
   assert 2 == length(common_numbers)
 end
@@ -2327,8 +2327,8 @@ test "linq51: Intersect - 2" do
 
   common_first_chars = Set.intersection(Enum.into(product_first_chars, HashSet.new), Enum.into(customer_first_chars, HashSet.new)) |> Enum.sort
 
-   IO.puts "Common first letters from Product names and Customer names:"
-   for c <- common_first_chars, do: IO.puts c
+  IO.puts "Common first letters from Product names and Customer names:"
+  for c <- common_first_chars, do: IO.puts c
 
   assert 19 == length(common_first_chars)
 end
@@ -2381,8 +2381,8 @@ test "linq52: Except - 1" do
 
   a_only_numbers = Set.difference(Enum.into(numbers_a, HashSet.new), Enum.into(numbers_b, HashSet.new)) |> Enum.sort
 
-   IO.puts "Numbers in first array but not second array:"
-   for n <- a_only_numbers, do: IO.puts n
+  IO.puts "Numbers in first array but not second array:"
+  for n <- a_only_numbers, do: IO.puts n
 
   assert 5 == length(a_only_numbers)
 end
@@ -2433,8 +2433,8 @@ test "linq53: Except - 2" do
 
   product_only_first_chars = Set.difference(Enum.into(product_first_chars, HashSet.new), Enum.into(customer_first_chars, HashSet.new)) |> Enum.sort
 
-   IO.puts "First letters from Product names, but not from Customer names:"
-   for c <- product_only_first_chars, do: IO.puts c
+  IO.puts "First letters from Product names, but not from Customer names:"
+  for c <- product_only_first_chars, do: IO.puts c
 
   assert 3 == length(product_only_first_chars)
 end
@@ -2445,4 +2445,165 @@ end
     J
     U
     Z
+
+LINQ - Conversion Operators
+---------------------------
+### linq54: ToArray
+```csharp
+//c#
+public void Linq54()
+{
+    double[] doubles = { 1.7, 2.3, 1.9, 4.1, 2.9 };
+
+    var sortedDoubles =
+        from d in doubles
+        orderby d descending
+        select d;
+    var doublesArray = sortedDoubles.ToArray();
+
+    Console.WriteLine("Every other double from highest to lowest:");
+    for (int d = 0; d < doublesArray.Length; d += 2)
+    {
+        Console.WriteLine(doublesArray[d]);
+    }
+}
+```
+```elixir
+# elixir
+test "linq54: ToArray" do
+  doubles = [1.7, 2.3, 1.9, 4.1, 2.9];
+  
+  sorted_doubles = doubles |> Enum.sort(& &1 > &2)
+
+  IO.puts "Every other double from highest to lowest:"
+  for d <- (sorted_doubles |> Enum.take_every(2)), do: IO.puts d
+
+  assert [4.1, 2.3, 1.7] == (sorted_doubles |> Enum.take_every(2))
+end
+```
+#### Output
+
+    Every other double from highest to lowest:
+    4.1
+    2.3
+    1.7
+
+### linq55: ToList
+```csharp
+//c#
+public void Linq55()
+{
+    string[] words = { "cherry", "apple", "blueberry" };
+
+    var sortedWords =
+        from w in words
+        orderby w
+        select w;
+    var wordList = sortedWords.ToList();
+
+    Console.WriteLine("The sorted word list:");
+    foreach (var w in wordList)
+    {
+        Console.WriteLine(w);
+    }
+}
+```
+```elixir
+# elixir
+test "linq55: ToList" do
+  # LINQ uses lazy evaluation.
+  # The best comparison here would be using a Stream.
+  # But Stream doesn't have a sort method, 
+  # and it makes sense, since sorting traverses the whole list anyway.
+  # For reference see: http://elixir-lang.org/getting-started/enumerables-and-streams.html
+
+  words = ["cherry", "apple", "blueberry"]
+
+  sorted_words = words |> Enum.sort
+
+  word_list = sorted_words
+
+  IO.puts "The sorted word list:"
+  for w <- word_list, do: IO.puts w
+
+  assert ["apple", "blueberry", "cherry"] == word_list
+end
+```
+#### Output
+
+    The sorted word list:
+    apple
+    blueberry
+    cherry
+
+### linq56: ToDictionary
+```csharp
+//c#
+public void Linq56()
+{
+    var scoreRecords = new[] { new {Name = "Alice", Score = 50},
+                                new {Name = "Bob"  , Score = 40},
+                                new {Name = "Cathy", Score = 45}
+                            };
+
+    var scoreRecordsDict = scoreRecords.ToDictionary(sr => sr.Name);
+
+    Console.WriteLine("Bob's score: {0}", scoreRecordsDict["Bob"]);
+}
+```
+```elixir
+# elixir
+test "linq56: ToDictionary" do
+  score_records = [%{name: "Alice", score: 50},
+                   %{name: "Bob", score: 40},
+                   %{name: "Cathy", score: 45}]
+
+  score_records_dict = score_records |> Enum.map(fn x -> {x.name, x.score} end) |> Enum.into(%{})
+
+  # If using Erlang 17, use HashDicts because https://gist.github.com/BinaryMuse/bb9f2cbf692e6cfa4841
+  # score_records_dict = score_records |> Enum.map(fn x -> {x.name, x} end) |> Enum.into(HashDict.new)
+
+  IO.puts ~s(Bob's Score: #{score_records_dict["Bob"]})
+
+  assert 40 == score_records_dict["Bob"]
+end
+```
+#### Output
+
+    Bob's score: 40
+
+### linq57: OfType
+```csharp
+//c#
+public void Linq57()
+{
+    object[] numbers = { null, 1.0, "two", 3, "four", 5, "six", 7.0 };
+
+    var doubles = numbers.OfType<double>();
+
+    Console.WriteLine("Numbers stored as doubles:");
+    foreach (var d in doubles)
+    {
+        Console.WriteLine(d);
+    }
+}
+```
+```elixir
+# elixir
+test "linq57: OfType" do
+  numbers = [nil, 1.0, "two", 3, "four", 5, "six", 7.0]
+
+  doubles = numbers |> Enum.filter &is_float/1
+
+  IO.puts "Numbers stored as doubles:"
+  for d <- doubles, do: IO.puts d
+
+  assert [1.0, 7.0] == doubles
+end
+```
+#### Output
+
+    Numbers stored as doubles:
+    1.0
+    7.0
 
