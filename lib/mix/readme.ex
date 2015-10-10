@@ -7,15 +7,15 @@ defmodule Mix.Tasks.Readme do
     #Mix.env(:test)
     #Mix.Tasks.Test.run(["test/set_test.exs:98"])
     t = File.read! "README.template.md"
-    files = Regex.scan(~r/LINQ - ([a-zA-Z]+) Operators/m, t, capture: :all_but_first) |> List.flatten |> Enum.map & String.downcase/1
+    files = Regex.scan(~r/LINQ - (?<name>[a-zA-Z]+)( Operators|.*$)/m, t, capture: :all_names) |> List.flatten |> Enum.map & String.downcase/1
     # files = Regex.scan(~r/LINQ - ([a-zA-Z]+) Operators/m, t, capture: :all_but_first) |> List.flatten
     
-    segments = String.split(t, ~r/^LINQ - ([a-zA-Z]+) Operators/m)
+    segments = String.split(t, ~r/^LINQ - ([a-zA-Z]+)( Operators|.*$)/m)
     readme = Enum.zip(["none"]++files, segments)
       |> Enum.map(&process_file/1)
       |> Enum.join
 
-    File.write! "README.md", readme
+    File.write! "README.md", Regex.replace(~r/(Quantifiers|Query Execution) Operators/, readme, "\\1")
   end
 
   defp process_file({"none", text}) do
