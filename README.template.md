@@ -38,15 +38,15 @@ The samples below mirror the C# LINQ samples in the form of `ExUnit` unit tests 
 #### [LINQ - Ordering Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/ordering_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/SQL-Ordering-Operators-050af19e)
 #### [LINQ - Grouping Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/grouping_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-to-DataSets-Grouping-c62703ea)
 #### [LINQ - Set Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/set_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Set-Operators-374f34fe)
-<!--
 #### [LINQ - Conversion Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/conversions_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Conversion-Operators-e4e59714)
-#### [LINQ - Element Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/elementoperators_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Element-Operators-0f3f12ce)
-#### [LINQ - Generation Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/generationoperators_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Generation-Operators-8a3fbff7)
+#### [LINQ - Element Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/element_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Element-Operators-0f3f12ce)
+#### [LINQ - Generation Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/generation_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Generation-Operators-8a3fbff7)
 #### [LINQ - Quantifiers](https://github.com/omnibs/elixir-linq-examples/blob/master/test/quantifiers_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Quantifiers-f00e7e3e)
-#### [LINQ - Aggregate Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/aggregateoperators_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Aggregate-Operators-c51b3869)
-#### [LINQ - Miscellaneous Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/miscoperators_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Miscellaneous-6b72bb2a)
+#### [LINQ - Aggregate Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/aggregate_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Aggregate-Operators-c51b3869)
+<!--
+#### [LINQ - Miscellaneous Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/misc_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Miscellaneous-6b72bb2a)
 #### [LINQ - Query Execution](https://github.com/omnibs/elixir-linq-examples/blob/master/test/queryexecution_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Query-Execution-ce0d3b95)
-#### [LINQ - Join Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/joinoperators_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Join-Operators-dabef4e9)
+#### [LINQ - Join Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/join_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Join-Operators-dabef4e9)
 -->
 #### More to come...
 
