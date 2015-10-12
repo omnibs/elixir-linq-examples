@@ -1256,25 +1256,6 @@ public class CaseInsensitiveComparer : IComparer<string>
 }
 ```
 
-### Clojure utils added
-
-```clojure
-(defn case-insensitive-compare [s1 s2]
-  (compare (.toLowerCase s1) (.toLowerCase s2)))
-
-(defn order-by-comparers [comparers xs]
-  (sort-by
-   pass-thru
-   (fn [a1 a2]
-     (nth (for [x (map #(% a1 a2) comparers)
-                :when (not= x 0)] x)
-          0 0))
-   xs))
-
-(defn order-by [fns xs]
-  (sort-by (apply juxt fns) xs))
-```
-
 ### linq28: OrderBy - Simple 1
 ```csharp
 //c#
@@ -1761,12 +1742,6 @@ public class AnagramEqualityComparer : IEqualityComparer<string>
         return new string(wordChars);
     }
 }
-```
-
-### Clojure utils added
-
-```clojure
-(defn anagram-comparer [a b] (compare (sort (.toCharArray a)) (sort (.toCharArray b))))
 ```
 
 ### linq40: GroupBy - Simple 1
@@ -2972,5 +2947,736 @@ end
 
     {:category Beverages, :products [#clj_linq.data.Product{:product-id 1, :product-name Chai, :category Beverages, :unit-price 18.0, :units-in-stock 39} #clj_linq.data.Product{:product-id 2, :product-name Chang, :category Beverages, :unit-price 19.0, :units-in-stock 17} #clj_linq.data.Product{:product-id 24, :product-name Guaraná Fantástica, :category Beverages, :unit-price 4.5, :units-in-stock 20} #clj_linq.data.Product{:product-id 34, :product-name Sasquatch Ale, :category Beverages, :unit-price 14.0, :units-in-stock 111} #clj_linq.data.Product{:product-id 35, :product-name Steeleye Stout, :category Beverages, :unit-price 18.0, :units-in-stock 20} #clj_linq.data.Product{:product-id 38, :product-name Côte de Blaye, :category Beverages, :unit-price 263.5, :units-in-stock 17} #clj_linq.data.Product{:product-id 39, :product-name Chartreuse verte, :category Beverages, :unit-price 18.0, :units-in-stock 69} #clj_linq.data.Product{:product-id 43, :product-name Ipoh Coffee, :category Beverages, :unit-price 46.0, :units-in-stock 17} #clj_linq.data.Product{:product-id 67, :product-name Laughing Lumberjack Lager, :category Beverages, :unit-price 14.0, :units-in-stock 52} #clj_linq.data.Product{:product-id 70, :product-name Outback Lager, :category Beverages, :unit-price 15.0, :units-in-stock 15} #clj_linq.data.Product{:product-id 75, :product-name Rhönbräu Klosterbier, :category Beverages, :unit-price 7.75, :units-in-stock 125} #clj_linq.data.Product{:product-id 76, :product-name Lakkalikööri, :category Beverages, :unit-price 18.0, :units-in-stock 57}]}
     ...
+
+
+LINQ - Aggregate Operators
+--------------------------
+
+### Elixir utils added
+```elixir
+def average(list) do
+  sum_and_count = list
+    |> Enum.reduce({0,0}, fn x, {acc, count} -> {acc + x, count + 1} end)
+  elem(sum_and_count, 0) / elem(sum_and_count, 1)
+end
+```
+
+### linq73: Count - Simple
+```csharp
+//c#
+public void Linq73()
+{
+    int[] factorsOf300 = { 2, 2, 3, 5, 5 };
+
+    int uniqueFactors = factorsOf300.Distinct().Count();
+
+    Console.WriteLine("There are {0} unique factors of 300.", uniqueFactors);
+}
+```
+```elixir
+# elixir
+test "linq73: Count - Simple" do
+  factors_of_300 = [2, 2, 3, 5, 5]
+
+  unique_factors = factors_of_300
+    |> Enum.uniq
+    |> Enum.count
+
+  IO.puts "There are #{unique_factors} unique factors of 300."
+
+  assert 3 == unique_factors
+end
+```
+#### Output
+
+    There are 3 unique factors of 300.
+
+### linq74: Count - Conditional
+```csharp
+//c#
+public void Linq74()
+{
+    int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+
+    int oddNumbers = numbers.Count(n => n % 2 == 1);
+
+    Console.WriteLine("There are {0} odd numbers in the list.", oddNumbers);
+}
+```
+```elixir
+# elixir
+test "linq74: Count - Conditional" do
+  require Integer
+  numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+
+  odd_numbers = numbers |> Enum.count(fn x -> Integer.is_odd(x) end)
+
+  IO.puts "There are #{odd_numbers} odd numbers in the list."
+
+  assert 5 == odd_numbers
+end
+```
+#### Output
+
+    There are 5 odd numbers in the list.
+
+### linq76: Count - Nested
+```csharp
+//c#
+public void Linq76()
+{
+    List<Customer> customers = GetCustomerList();
+
+    var orderCounts =
+        from c in customers
+        select new { c.CustomerID, OrderCount = c.Orders.Count() };
+
+    ObjectDumper.Write(orderCounts);
+}
+```
+```elixir
+# elixir
+test "linq76: Count - Nested" do
+  customers = get_customer_list()
+
+  order_counts = customers |> Enum.map(fn x -> %{customer_id: x.id, order_count: x.orders |> Enum.count } end)
+
+  IO.inspect order_counts
+
+  assert 6 == hd(order_counts).order_count
+end
+```
+#### Output
+
+    {:customer-id ALFKI, :order-count 6}
+    {:customer-id ANATR, :order-count 4}
+    {:customer-id ANTON, :order-count 7}
+    {:customer-id AROUT, :order-count 13}
+    {:customer-id BERGS, :order-count 18}
+    {:customer-id BLAUS, :order-count 7}
+    {:customer-id BLONP, :order-count 11}
+    ...
+
+### linq77: Count - Grouped
+```csharp
+//c#
+public void Linq77()
+{
+    List<Product> products = GetProductList();
+
+    var categoryCounts =
+        from p in products
+        group p by p.Category into g
+        select new { Category = g.Key, ProductCount = g.Count() };
+
+    ObjectDumper.Write(categoryCounts
+}
+```
+```elixir
+# elixir
+test "linq77: Count - Grouped" do
+  products = get_product_list()
+
+  category_counts = products
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.map fn x -> %{category: elem(x, 0), product_count: elem(x, 1) |> Enum.count} end
+
+  IO.inspect category_counts
+
+  assert 12 == hd(category_counts).product_count
+end
+```
+#### Output
+
+    {:category Beverages, :product-count 12}
+    {:category Condiments, :product-count 12}
+    {:category Produce, :product-count 5}
+    {:category Meat/Poultry, :product-count 6}
+    {:category Seafood, :product-count 12}
+    {:category Dairy Products, :product-count 10}
+    {:category Confections, :product-count 13}
+    {:category Grains/Cereals, :product-count 7}
+
+### linq78: Sum - Simple
+```csharp
+//c#
+public void Linq78()
+{
+    int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+
+    double numSum = numbers.Sum();
+
+    Console.WriteLine("The sum of the numbers is {0}.", numSum);
+}
+```
+```elixir
+# elixir
+test "linq78: Sum - Simple" do
+  numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+
+  num_sum = numbers |> Enum.sum
+
+  IO.puts "The sum of the numbers is #{num_sum}"
+
+  assert 45 = num_sum
+end
+```
+#### Output
+
+    The sum of the numbers is  45
+
+### linq79: Sum - Projection
+```csharp
+//c#
+public void Linq79()
+{
+    string[] words = { "cherry", "apple", "blueberry" };
+
+    double totalChars = words.Sum(w => w.Length);
+
+    Console.WriteLine("There are a total of {0} characters in these words.", totalChars);
+}
+```
+```elixir
+# elixir
+test "linq79: Sum - Projection" do
+  words = ["cherry", "apple", "blueberry"]
+
+  total_chars = words
+    |> Enum.map(&String.length/1)
+    |> Enum.sum
+
+  IO.puts "There are a total of #{total_chars} characters in these words."
+
+  assert 20 == total_chars
+end
+```
+#### Output
+
+    There are a total of 20 characters in these words.
+
+### linq80: Sum - Grouped
+```csharp
+//c#
+public void Linq80()
+{
+    List<Product> products = GetProductList();
+
+    var categories =
+        from p in products
+        group p by p.Category into g
+        select new { Category = g.Key, TotalUnitsInStock = g.Sum(p => p.UnitsInStock) };
+
+    ObjectDumper.Write(categories);
+}
+```
+```elixir
+# elixir
+test "linq80: Sum - Grouped" do
+  products = get_product_list()
+
+  categories = products
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.map(fn g ->
+      %{
+        category: elem(g, 0),
+        total_units_in_stock: elem(g, 1)
+          |> Enum.map(fn p -> p.units_in_stock end)
+          |> Enum.sum
+      }
+    end)
+
+  IO.inspect categories
+
+  assert 559 == hd(categories).total_units_in_stock
+end
+```
+#### Output
+
+    {:category Beverages, :total-units-in-stock 559}
+    {:category Condiments, :total-units-in-stock 507}
+    {:category Produce, :total-units-in-stock 100}
+    {:category Meat/Poultry, :total-units-in-stock 165}
+    {:category Seafood, :total-units-in-stock 701}
+    {:category Dairy Products, :total-units-in-stock 393}
+    {:category Confections, :total-units-in-stock 386}
+    {:category Grains/Cereals, :total-units-in-stock 308}
+
+### linq81: Min - Simple
+```csharp
+//c#
+public void Linq81()
+{
+    int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+
+    int minNum = numbers.Min();
+
+    Console.WriteLine("The minimum number is {0}.", minNum);
+}
+```
+```elixir
+# elixir
+test "linq81: Min - Simple" do
+  numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+
+  min_num = numbers |> Enum.min
+
+  IO.puts "The minimum number is #{min_num}"
+
+  assert 0 == min_num
+end
+```
+#### Output
+
+    The minimum number is 0
+
+### linq82: Min - Projection
+```csharp
+//c#
+public void Linq82()
+{
+    string[] words = { "cherry", "apple", "blueberry" };
+
+    int shortestWord = words.Min(w => w.Length);
+
+    Console.WriteLine("The shortest word is {0} characters long.", shortestWord);
+}
+```
+```elixir
+# elixir
+test "linq82: Min - Projection" do
+  words = ["cherry", "apple", "blueberry"]
+
+  shortest_word = words |> Enum.map(&String.length/1) |> Enum.min
+
+  IO.puts "The shortest word is #{shortest_word} characters long."
+
+  assert 5 == shortest_word
+end
+```
+#### Output
+
+    The shortest word is 5 characters long.
+
+### linq83: Min - Grouped
+```csharp
+//c#
+public void Linq83()
+{
+    List<Product> products = GetProductList();
+
+    var categories =
+        from p in products
+        group p by p.Category into g
+        select new { Category = g.Key, CheapestPrice = g.Min(p => p.UnitPrice) };
+
+    ObjectDumper.Write(categories);
+}
+```
+```elixir
+# elixir
+test "linq83: Min - Grouped" do
+  products = get_product_list()
+
+  categories = products
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.map(fn g ->
+      %{
+        category: elem(g, 0),
+        cheapest_price: elem(g, 1)
+          |> Enum.map(fn p -> p.unit_price end)
+          |> Enum.min
+      }
+    end)
+
+  IO.inspect categories
+
+  assert 4.5 == hd(categories).cheapest_price
+end
+```
+#### Output
+
+    {:category Beverages, :cheapest-price 4.5}
+    {:category Condiments, :cheapest-price 10.0}
+    {:category Produce, :cheapest-price 10.0}
+    {:category Meat/Poultry, :cheapest-price 7.45}
+    {:category Seafood, :cheapest-price 6.0}
+    {:category Dairy Products, :cheapest-price 2.5}
+    {:category Confections, :cheapest-price 9.2}
+    {:category Grains/Cereals, :cheapest-price 7.0}
+
+### linq84: Min - Elements
+```csharp
+//c#
+public void Linq84()
+{
+    List<Product> products = GetProductList();
+
+    var categories =
+        from p in products
+        group p by p.Category into g
+        let minPrice = g.Min(p => p.UnitPrice)
+        select new { Category = g.Key, CheapestProducts = g.Where(p => p.UnitPrice == minPrice) };
+
+    ObjectDumper.Write(categories, 1);
+}
+```
+```elixir
+# elixir
+test "linq84: Min - Elements" do
+  products = get_product_list()
+
+  categories = products
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.map(fn g ->
+      min_price = elem(g, 1)
+          |> Enum.map(fn p -> p.unit_price end)
+          |> Enum.min
+      %{
+        category: elem(g, 0),
+        cheapest_products: elem(g, 1)
+          |> Enum.filter(fn p -> p.unit_price == min_price end)
+      }
+    end)
+
+  IO.inspect categories
+
+  assert 24 == categories |> hd |> Map.get(:cheapest_products) |> hd |> Map.get(:product_id)
+end
+```
+#### Output
+
+    {:category Beverages, :cheapest-products (#clj_linq.data.Product{:product-id 24, :product-name Guaraná Fantástica, :category Beverages, :unit-price 4.5, :units-in-stock 20})}
+    {:category Condiments, :cheapest-products (#clj_linq.data.Product{:product-id 3, :product-name Aniseed Syrup, :category Condiments, :unit-price 10.0, :units-in-stock 13})}
+    {:category Produce, :cheapest-products (#clj_linq.data.Product{:product-id 74, :product-name Longlife Tofu, :category Produce, :unit-price 10.0, :units-in-stock 4})}
+    {:category Meat/Poultry, :cheapest-products (#clj_linq.data.Product{:product-id 54, :product-name Tourtière, :category Meat/Poultry, :unit-price 7.45, :units-in-stock 21})}
+    {:category Seafood, :cheapest-products (#clj_linq.data.Product{:product-id 13, :product-name Konbu, :category Seafood, :unit-price 6.0, :units-in-stock 24})}
+    {:category Dairy Products, :cheapest-products (#clj_linq.data.Product{:product-id 33, :product-name Geitost, :category Dairy Products, :unit-price 2.5, :units-in-stock 112})}
+    {:category Confections, :cheapest-products (#clj_linq.data.Product{:product-id 19, :product-name Teatime Chocolate Biscuits, :category Confections, :unit-price 9.2, :units-in-stock 25})}
+    {:category Grains/Cereals, :cheapest-products (#clj_linq.data.Product{:product-id 52, :product-name Filo Mix, :category Grains/Cereals, :unit-price 7.0, :units-in-stock 38})}
+
+### linq85: Max - Simple
+```csharp
+//c#
+public void Linq85()
+{
+    int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+
+    int maxNum = numbers.Max();
+
+    Console.WriteLine("The maximum number is {0}.", maxNum);
+}
+```
+```elixir
+# elixir
+test "linq85: Max - Simple" do
+  numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+
+  max_num = numbers |> Enum.max
+
+  IO.puts "The maximum number is #{max_num}"
+
+  assert 9 == max_num
+end
+```
+#### Output
+
+    The maximum number is 9
+
+### linq86: Max - Projection
+```csharp
+//c#
+public void Linq86()
+{
+    string[] words = { "cherry", "apple", "blueberry" };
+
+    int longestLength = words.Max(w => w.Length);
+
+    Console.WriteLine("The longest word is {0} characters long.", longestLength);
+}
+```
+```elixir
+# elixir
+test "linq86: Max - Projection" do
+  words = ["cherry", "apple", "blueberry"]
+
+  longest_word = words |> Enum.map(&String.length/1) |> Enum.max
+
+  IO.puts "The longest word is #{longest_word} characters long."
+
+  assert 9 == longest_word
+end
+```
+#### Output
+
+    The longest word is 9 characters long.
+
+### linq87: Max - Grouped
+```csharp
+//c#
+public void Linq87()
+{
+    List<Product> products = GetProductList();
+
+    var categories =
+        from p in products
+        group p by p.Category into g
+        select new { Category = g.Key, MostExpensivePrice = g.Max(p => p.UnitPrice) };
+
+    ObjectDumper.Write(categories);
+}
+```
+```elixir
+# elixir
+test "linq87: Max - Grouped" do
+  products = get_product_list()
+
+  categories = products
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.map(fn g ->
+      %{
+        category: elem(g, 0),
+        most_expensive_price: elem(g, 1)
+          |> Enum.map(fn p -> p.unit_price end)
+          |> Enum.max
+      }
+    end)
+
+  IO.inspect categories
+
+  assert 263.5 == hd(categories).most_expensive_price
+end
+```
+#### Output
+
+    {:category Beverages, :most-expensive-price 263.5}
+    {:category Condiments, :most-expensive-price 43.9}
+    {:category Produce, :most-expensive-price 53.0}
+    {:category Meat/Poultry, :most-expensive-price 123.79}
+    {:category Seafood, :most-expensive-price 62.5}
+    {:category Dairy Products, :most-expensive-price 55.0}
+    {:category Confections, :most-expensive-price 81.0}
+    {:category Grains/Cereals, :most-expensive-price 38.0}
+
+### linq88: Max - Elements
+```csharp
+//c#
+public void Linq88()
+{
+    List<Product> products = GetProductList();
+
+    var categories =
+        from p in products
+        group p by p.Category into g
+        let maxPrice = g.Max(p => p.UnitPrice)
+        select new { Category = g.Key, MostExpensiveProducts = g.Where(p => p.UnitPrice == maxPrice) };
+
+    ObjectDumper.Write(categories, 1);
+}
+```
+```elixir
+# elixir
+test "linq88: Max - Elements" do
+  products = get_product_list()
+
+  categories = products
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.map(fn g ->
+      max_price = elem(g, 1)
+          |> Enum.map(fn p -> p.unit_price end)
+          |> Enum.max
+      %{
+        category: elem(g, 0),
+        most_expensive_products: elem(g, 1)
+          |> Enum.filter(fn p -> p.unit_price == max_price end)
+      }
+    end)
+
+  IO.inspect categories
+
+  assert 38 == categories |> hd |> Map.get(:most_expensive_products) |> hd |> Map.get(:product_id)
+end
+```
+#### Output
+
+    {:category Beverages, :most-expensive-products (#clj_linq.data.Product{:product-id 38, :product-name Côte de Blaye, :category Beverages, :unit-price 263.5, :units-in-stock 17})}
+    {:category Condiments, :most-expensive-products (#clj_linq.data.Product{:product-id 63, :product-name Vegie-spread, :category Condiments, :unit-price 43.9, :units-in-stock 24})}
+    {:category Produce, :most-expensive-products (#clj_linq.data.Product{:product-id 51, :product-name Manjimup Dried Apples, :category Produce, :unit-price 53.0, :units-in-stock 20})}
+    {:category Meat/Poultry, :most-expensive-products (#clj_linq.data.Product{:product-id 29, :product-name Thüringer Rostbratwurst, :category Meat/Poultry, :unit-price 123.79, :units-in-stock 0})}
+    {:category Seafood, :most-expensive-products (#clj_linq.data.Product{:product-id 18, :product-name Carnarvon Tigers, :category Seafood, :unit-price 62.5, :units-in-stock 42})}
+    {:category Dairy Products, :most-expensive-products (#clj_linq.data.Product{:product-id 59, :product-name Raclette Courdavault, :category Dairy Products, :unit-price 55.0, :units-in-stock 79})}
+    {:category Confections, :most-expensive-products (#clj_linq.data.Product{:product-id 20, :product-name Sir Rodney's Marmalade, :category Confections, :unit-price 81.0, :units-in-stock 40})}
+    {:category Grains/Cereals, :most-expensive-products (#clj_linq.data.Product{:product-id 56, :product-name Gnocchi di nonna Alice, :category Grains/Cereals, :unit-price 38.0, :units-in-stock 21})}
+
+### linq89: Average - Simple
+```csharp
+//c#
+public void Linq89()
+{
+    int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+
+    double averageNum = numbers.Average();
+
+    Console.WriteLine("The average number is {0}.", averageNum);
+}
+```
+```elixir
+# elixir
+test "linq89: Average - Simple" do
+  numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+
+  average_num = numbers |> average
+
+  IO.puts "The average number is #{average_num}"
+
+  assert 4.5 == average_num
+end
+```
+#### Output
+
+    The average number is 9/2
+
+### linq90: Average - Projection
+```csharp
+//c#
+public void Linq90()
+{
+    string[] words = { "cherry", "apple", "blueberry" };
+
+    double averageLength = words.Average(w => w.Length);
+
+    Console.WriteLine("The average word length is {0} characters.", averageLength);
+}
+```
+```elixir
+# elixir
+test "linq90: Average - Projection" do
+  words = ["cherry", "apple", "blueberry"]
+
+  average_length = words
+    |> Enum.map(&String.length/1)
+    |> average
+
+  IO.puts "Average word length is #{average_length} characters."
+
+  assert 20/3 == average_length
+end
+```
+#### Output
+
+    The average word length is 20/3 characters.
+
+### linq91: Average - Grouped
+```csharp
+//c#
+public void Linq91()
+{
+    List<Product> products = GetProductList();
+
+    var categories =
+        from p in products
+        group p by p.Category into g
+        select new { Category = g.Key, AveragePrice = g.Average(p => p.UnitPrice) };
+
+    ObjectDumper.Write(categories);
+}
+```
+```elixir
+# elixir
+test "linq91: Average - Grouped" do
+  products = get_product_list()
+
+  categories = products
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.map(fn g ->
+      %{
+        category: elem(g, 0),
+        average_price: elem(g, 1)
+          |> Enum.map(fn p -> p.unit_price end)
+          |> average
+      }
+    end)
+
+  IO.inspect categories
+
+  assert 37.979166666666664 == hd(categories).average_price
+end
+```
+#### Output
+
+    {:category Beverages, :average-price 37.979166666666664}
+    {:category Condiments, :average-price 23.0625}
+    {:category Produce, :average-price 32.37}
+    {:category Meat/Poultry, :average-price 54.00666666666667}
+    {:category Seafood, :average-price 20.6825}
+    {:category Dairy Products, :average-price 28.73}
+    {:category Confections, :average-price 25.16}
+    {:category Grains/Cereals, :average-price 20.25}
+
+### linq92: Aggregate - Simple
+```csharp
+//c#
+public void Linq92()
+{
+    double[] doubles = { 1.7, 2.3, 1.9, 4.1, 2.9 };
+
+    double product = doubles.Aggregate((runningProduct, nextFactor) => runningProduct * nextFactor);
+
+    Console.WriteLine("Total product of all numbers: {0}", product);
+}
+```
+```elixir
+# elixir
+test "linq92: Aggregate - Simple" do
+  doubles = [1.7, 2.3, 1.9, 4.1, 2.9]
+
+  product = doubles |> Enum.reduce(fn x, acc -> x * acc end)
+
+  IO.puts "Total product of all numbers: #{product}"
+
+  assert 88.33080999999999 == product
+end
+```
+#### Output
+
+    Total product of all numbers: 88.33080999999999
+
+### linq93: Aggregate - Seed
+```csharp
+//c#
+public void Linq93()
+{
+    double startBalance = 100.0;
+
+    int[] attemptedWithdrawals = { 20, 10, 40, 50, 10, 70, 30 };
+
+    double endBalance =
+        attemptedWithdrawals.Aggregate(startBalance,
+            (balance, nextWithdrawal) =>
+                ((nextWithdrawal <= balance) ? (balance - nextWithdrawal) : balance));
+
+    Console.WriteLine("Ending balance: {0}", endBalance);
+}
+```
+```elixir
+# elixir
+test "linq93: Aggregate - Seed" do
+  startBalance = 100.0
+
+  attempted_withdrawals = [20, 10, 40, 50, 10, 70, 30]
+
+  end_balance = attempted_withdrawals
+    |> Enum.reduce(startBalance, fn next_withdrawal, balance ->
+        if next_withdrawal <= balance, do: balance - next_withdrawal, else: balance
+      end)
+
+  IO.puts "Ending balance: #{end_balance}"
+
+  assert 20 == end_balance
+end
+```
+#### Output
+
+    Ending balance: 20
 
 

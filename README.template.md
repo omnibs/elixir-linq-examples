@@ -1153,25 +1153,6 @@ public class CaseInsensitiveComparer : IComparer<string>
 }
 ```
 
-### Clojure utils added
-
-```clojure
-(defn case-insensitive-compare [s1 s2]
-  (compare (.toLowerCase s1) (.toLowerCase s2)))
-
-(defn order-by-comparers [comparers xs]
-  (sort-by
-   pass-thru
-   (fn [a1 a2]
-     (nth (for [x (map #(% a1 a2) comparers)
-                :when (not= x 0)] x)
-          0 0))
-   xs))
-
-(defn order-by [fns xs]
-  (sort-by (apply juxt fns) xs))
-```
-
 ### linq28: OrderBy - Simple 1
 ```csharp
 //c#
@@ -1596,12 +1577,6 @@ public class AnagramEqualityComparer : IEqualityComparer<string>
         return new string(wordChars);
     }
 }
-```
-
-### Clojure utils added
-
-```clojure
-(defn anagram-comparer [a b] (compare (sort (.toCharArray a)) (sort (.toCharArray b))))
 ```
 
 ### linq40: GroupBy - Simple 1
@@ -2636,9 +2611,13 @@ public void Linq72()
 LINQ - Aggregate Operators
 --------------------------
 
-### Clojure utils added
-```clojure
-(defn average [coll] (/ (reduce + coll) (count coll)))
+### Elixir utils added
+```elixir
+def average(list) do
+  sum_and_count = list
+    |> Enum.reduce({0,0}, fn x, {acc, count} -> {acc + x, count + 1} end)
+  elem(sum_and_count, 0) / elem(sum_and_count, 1)
+end
 ```
 
 ### linq73: Count - Simple
