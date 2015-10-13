@@ -27,7 +27,7 @@ defmodule Mix.Tasks.Readme do
         # get tests in file using regex
         # format [[test, name], ...]
         # then we map it to { "name" => "test", ... }
-        tests_and_names = Regex.scan(~r/  test "([^"]+)" do.+\n  end/Us, test_file)
+        tests_and_names = Regex.scan(~r/  test "([^"]+)".+\n  end/Us, test_file)
           |> Enum.reduce(%{}, fn ([test, name], acc) -> Map.put(acc, name, test) end)
 
         # get examples placeholders using regex
