@@ -3843,3 +3843,149 @@ end
     The sequences match: false
 
 
+LINQ - Query Operators
+----------------------
+
+### Elixir utils added
+```elixir
+defmodule Counter do
+  def start_link(n) do
+    Agent.start_link(fn -> n end)
+  end
+
+  def get(pid) do
+    Agent.get(pid, fn x -> x end)
+  end
+
+  def inc(pid) do
+    Agent.get_and_update(pid, fn x -> {x + 1, x + 1} end)
+  end
+end
+```
+
+### linq99: Deferred Execution
+```csharp
+//c#
+public void Linq99()
+{
+    // Sequence operators form first-class queries that
+    // are not executed until you enumerate over them.
+
+    int[] numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+
+    int i = 0;
+    var q =
+        from n in numbers
+        select ++i;
+
+    // Note, the local variable 'i' is not incremented
+    // until each element is evaluated (as a side-effect):
+    foreach (var v in q)
+    {
+        Console.WriteLine("v = {0}, i = {1}", v, i);
+    }
+}
+```
+```elixir
+# elixir
+
+```
+#### Output
+
+    0 10 10
+
+### linq100: Immediate Execution
+```csharp
+//c#
+public void Linq100()
+{
+    // Methods like ToList() cause the query to be
+    // executed immediately, caching the results.
+
+    int[] numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+
+    int i = 0;
+    var q = (
+        from n in numbers
+        select ++i)
+        .ToList();
+
+    // The local variable i has already been fully
+    // incremented before we iterate the results:
+    foreach (var v in q)
+    {
+        Console.WriteLine("v = {0}, i = {1}", v, i);
+    }
+}
+```
+```elixir
+# elixir
+
+```
+#### Output
+
+    10 10 10
+
+### linq101: Query Reuse
+```csharp
+//c#
+public void Linq101()
+{
+    // Deferred execution lets us define a query once
+    // and then reuse it later after data changes.
+
+    int[] numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+    var lowNumbers =
+        from n in numbers
+        where n <= 3
+        select n;
+
+    Console.WriteLine("First run numbers <= 3:");
+    foreach (int n in lowNumbers)
+    {
+        Console.WriteLine(n);
+    }
+
+    for (int i = 0; i < 10; i++)
+    {
+        numbers[i] = -numbers[i];
+    }
+
+    // During this second run, the same query object,
+    // lowNumbers, will be iterating over the new state
+    // of numbers[], producing different results:
+    Console.WriteLine("Second run numbers <= 3:");
+    foreach (int n in lowNumbers)
+    {
+        Console.WriteLine(n);
+    }
+}
+```
+```elixir
+# elixir
+test "linq101: Query Reuse" do
+  numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+
+  # Still trying to solve this one
+end
+```
+#### Output
+
+    First run numbers <= 3:
+    1
+    3
+    2
+    0
+    Second run numbers <= 3
+    -5
+    -4
+    -1
+    -3
+    -9
+    -8
+    -6
+    -7
+    -2
+    0
+
+

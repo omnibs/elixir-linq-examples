@@ -3347,6 +3347,23 @@ public void Linq97()
 LINQ - Query Execution
 ----------------------
 
+### Elixir utils added
+```elixir
+defmodule Counter do
+  def start_link(n) do
+    Agent.start_link(fn -> n end)
+  end
+
+  def get(pid) do
+    Agent.get(pid, fn x -> x end)
+  end
+
+  def inc(pid) do
+    Agent.get_and_update(pid, fn x -> {x + 1, x + 1} end)
+  end
+end
+```
+
 ### linq99: Deferred Execution
 ```csharp
 //c#
