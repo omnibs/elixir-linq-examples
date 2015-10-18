@@ -7,7 +7,7 @@ defmodule Counter do
     Agent.get(pid, fn x -> x end)
   end
 
-  def get_and_update(pid) do
+  def inc(pid) do
     Agent.get_and_update(pid, fn x -> {x + 1, x + 1} end)
   end
 end

@@ -43,9 +43,9 @@ The samples below mirror the C# LINQ samples in the form of `ExUnit` unit tests 
 #### [LINQ - Generation Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/generation_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Generation-Operators-8a3fbff7)
 #### [LINQ - Quantifiers](https://github.com/omnibs/elixir-linq-examples/blob/master/test/quantifiers_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Quantifiers-f00e7e3e)
 #### [LINQ - Aggregate Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/aggregate_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Aggregate-Operators-c51b3869)
-<!--
 #### [LINQ - Miscellaneous Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/misc_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Miscellaneous-6b72bb2a)
-#### [LINQ - Query Execution](https://github.com/omnibs/elixir-linq-examples/blob/master/test/queryexecution_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Query-Execution-ce0d3b95)
+#### [LINQ - Query Execution](https://github.com/omnibs/elixir-linq-examples/blob/master/test/query_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Query-Execution-ce0d3b95)
+<!--
 #### [LINQ - Join Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/join_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Join-Operators-dabef4e9)
 -->
 #### More to come...
@@ -3988,9 +3988,34 @@ public void Linq101()
 ```elixir
 # elixir
 test "linq101: Query Reuse" do
+  # This is a hacky way of doing the same as C# above
   numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-  # Still trying to solve this one
+  # We use agents to hold mutable state
+  {:ok, pid} = Agent.start_link(fn -> numbers end)
+
+  # Turn our agent into a stream to make it lazy
+  # Otherwise we wouldn't be able to defer linking
+  # the stream to the value of the array
+  # and the Agent.update below would have no effect
+  numbers_stream = Stream.resource(
+      fn -> Agent.get(pid, & &1) end,
+      fn 
+        [head | tail] -> {[head], tail}
+        _ -> {:halt, nil}
+      end,
+      fn _ -> end)
+
+  low_numbers = numbers_stream
+    |> Stream.filter(& &1 <= 3)
+
+  IO.puts "First run numbers <= 3:"
+  for n <- low_numbers, do: IO.puts n
+
+  Agent.update(pid, fn x -> x |> Enum.map(& -&1) end)
+
+  IO.puts "Second run numbers <= 3:"
+  for n <- low_numbers, do: IO.puts n
 end
 ```
 #### Output

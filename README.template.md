@@ -43,9 +43,9 @@ The samples below mirror the C# LINQ samples in the form of `ExUnit` unit tests 
 #### [LINQ - Generation Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/generation_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Generation-Operators-8a3fbff7)
 #### [LINQ - Quantifiers](https://github.com/omnibs/elixir-linq-examples/blob/master/test/quantifiers_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Quantifiers-f00e7e3e)
 #### [LINQ - Aggregate Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/aggregate_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Aggregate-Operators-c51b3869)
-<!--
 #### [LINQ - Miscellaneous Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/misc_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Miscellaneous-6b72bb2a)
-#### [LINQ - Query Execution](https://github.com/omnibs/elixir-linq-examples/blob/master/test/queryexecution_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Query-Execution-ce0d3b95)
+#### [LINQ - Query Execution](https://github.com/omnibs/elixir-linq-examples/blob/master/test/query_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Query-Execution-ce0d3b95)
+<!--
 #### [LINQ - Join Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/join_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Join-Operators-dabef4e9)
 -->
 #### More to come...
