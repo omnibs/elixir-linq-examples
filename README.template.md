@@ -3775,4 +3775,4 @@ public void Linq105()
 
 ### Contributors
 
-  - [mythz](https://github.com/mythz) (Demis Bellot)
+  - [omnibs](https://github.com/omnibs) (Juliano Bortolozzo Solanho)

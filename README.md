@@ -4331,4 +4331,4 @@ end
 
 ### Contributors
 
-  - [mythz](https://github.com/mythz) (Demis Bellot)
+  - [omnibs](https://github.com/omnibs) (Juliano Bortolozzo Solanho)
