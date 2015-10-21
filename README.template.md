@@ -45,10 +45,7 @@ The samples below mirror the C# LINQ samples in the form of `ExUnit` unit tests 
 #### [LINQ - Aggregate Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/aggregate_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Aggregate-Operators-c51b3869)
 #### [LINQ - Miscellaneous Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/misc_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Miscellaneous-6b72bb2a)
 #### [LINQ - Query Execution](https://github.com/omnibs/elixir-linq-examples/blob/master/test/query_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Query-Execution-ce0d3b95)
-<!--
 #### [LINQ - Join Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/join_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Join-Operators-dabef4e9)
--->
-#### More to come...
 
 ##  Side-by-side - C# LINQ vs Elixir
 
@@ -3504,16 +3501,26 @@ public void Linq101()
     -2
     0
 
+It's possible to showcase Query Reuse without functions using Streams, but it's uglier. An example can be found [here](https://gist.github.com/omnibs/c662c677517905f57424).
 
 LINQ - Join Operators
 ---------------------
 
-### Clojure utils added
-
-```clojure
-(defn join [coll with-coll matcher]
-  (map (fn [x] {:key x :items (filter (fn [y] (matcher x y)) with-coll)})
-       coll))
+### Elixir utils added
+```elixir
+def left_outer_join(list1, list2, equality, mapper1 \\ & &1, mapper2 \\ & &1) do
+  Enum.reduce(list1, [], fn a, acc -> 
+    matches = list2 |> Enum.filter(fn b -> equality.(a,b) end)
+    if Enum.empty?(matches) do
+      [{mapper1.(a), nil} | acc]
+    else
+      mapped_a = mapper1.(a);
+      entries = matches |> Enum.map(& {mapped_a, mapper2.(&1)})
+      entries ++ acc
+    end
+  end) 
+    |> Enum.reverse
+end
 ```
 
 ### linq102: Cross Join

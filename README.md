@@ -45,10 +45,7 @@ The samples below mirror the C# LINQ samples in the form of `ExUnit` unit tests 
 #### [LINQ - Aggregate Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/aggregate_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Aggregate-Operators-c51b3869)
 #### [LINQ - Miscellaneous Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/misc_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Miscellaneous-6b72bb2a)
 #### [LINQ - Query Execution](https://github.com/omnibs/elixir-linq-examples/blob/master/test/query_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Query-Execution-ce0d3b95)
-<!--
 #### [LINQ - Join Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/join_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Join-Operators-dabef4e9)
--->
-#### More to come...
 
 ##  Side-by-side - C# LINQ vs Elixir
 
@@ -3988,34 +3985,23 @@ public void Linq101()
 ```elixir
 # elixir
 test "linq101: Query Reuse" do
-  # This is a hacky way of doing the same as C# above
   numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
   # We use agents to hold mutable state
   {:ok, pid} = Agent.start_link(fn -> numbers end)
 
-  # Turn our agent into a stream to make it lazy
-  # Otherwise we wouldn't be able to defer linking
-  # the stream to the value of the array
-  # and the Agent.update below would have no effect
-  numbers_stream = Stream.resource(
-      fn -> Agent.get(pid, & &1) end,
-      fn 
-        [head | tail] -> {[head], tail}
-        _ -> {:halt, nil}
-      end,
-      fn _ -> end)
-
-  low_numbers = numbers_stream
-    |> Stream.filter(& &1 <= 3)
+  # And use functions for query reuse
+  low_numbers = fn -> Agent.get(pid, & &1) |> Enum.filter(& &1 <= 3) end
 
   IO.puts "First run numbers <= 3:"
-  for n <- low_numbers, do: IO.puts n
+  for n <- low_numbers.(), do: IO.puts n
 
   Agent.update(pid, fn x -> x |> Enum.map(& -&1) end)
 
   IO.puts "Second run numbers <= 3:"
-  for n <- low_numbers, do: IO.puts n
+  for n <- low_numbers.(), do: IO.puts n
+
+  assert [-5, -4, -1, -3, -9, -8, -6, -7, -2, 0] == low_numbers.()
 end
 ```
 #### Output
@@ -4037,4 +4023,312 @@ end
     -2
     0
 
+It's possible to showcase Query Reuse without functions using Streams, but it's uglier. An example can be found [here](https://gist.github.com/omnibs/c662c677517905f57424).
 
+LINQ - Join Operators
+---------------------
+
+### Elixir utils added
+```elixir
+def left_outer_join(list1, list2, equality, mapper1 \\ & &1, mapper2 \\ & &1) do
+  Enum.reduce(list1, [], fn a, acc -> 
+    matches = list2 |> Enum.filter(fn b -> equality.(a,b) end)
+    if Enum.empty?(matches) do
+      [{mapper1.(a), nil} | acc]
+    else
+      mapped_a = mapper1.(a);
+      entries = matches |> Enum.map(& {mapped_a, mapper2.(&1)})
+      entries ++ acc
+    end
+  end) 
+    |> Enum.reverse
+end
+```
+
+### linq102: Cross Join
+```csharp
+//c#
+public void Linq102()
+{
+    string[] categories = new string[]{
+        "Beverages",
+        "Condiments",
+        "Vegetables",
+        "Dairy Products",
+        "Seafood" };
+
+    List<Product> products = GetProductList();
+
+    var q =
+        from c in categories
+        join p in products on c equals p.Category
+        select new { Category = c, p.ProductName };
+
+    foreach (var v in q)
+    {
+        Console.WriteLine(v.ProductName + ": " + v.Category);
+    }
+}
+```
+```elixir
+# elixir
+test "linq102: Cross Join" do
+  categories = ["Beverages",
+    "Condiments",
+    "Vegetables",
+    "Dairy Products",
+    "Seafood"]
+
+  products = get_product_list()
+
+  q = 
+    for c <- categories, 
+      p <- products, 
+      p.category == c, 
+      do: %{category: c, product_name: p.product_name}
+
+  for v <- q, do: IO.puts "#{v.product_name}: #{v.category}"
+
+  assert length(q) < length(products)
+end
+```
+#### Output
+
+    Chai : Beverages
+    Chang : Beverages
+    Guaraná Fantástica : Beverages
+    Sasquatch Ale : Beverages
+    Steeleye Stout : Beverages
+    Côte de Blaye : Beverages
+    Chartreuse verte : Beverages
+    Ipoh Coffee : Beverages
+    ...
+
+### linq103: Group Join
+```csharp
+//c#
+public void Linq103()
+{
+    string[] categories = new string[]{
+        "Beverages",
+        "Condiments",
+        "Vegetables",
+        "Dairy Products",
+        "Seafood" };
+
+    List<Product> products = GetProductList();
+
+    var q =
+        from c in categories
+        join p in products on c equals p.Category into ps
+        select new { Category = c, Products = ps };
+
+    foreach (var v in q)
+    {
+        Console.WriteLine(v.Category + ":");
+        foreach (var p in v.Products)
+        {
+            Console.WriteLine("   " + p.ProductName);
+        }
+    }
+}
+```
+```elixir
+# elixir
+test "linq103: Group Join" do
+  categories = ["Beverages",
+    "Condiments",
+    "Vegetables",
+    "Dairy Products",
+    "Seafood"]
+
+  products = get_product_list()
+
+  q = for c <- categories,
+        ps <- Enum.group_by(products, fn x -> x.category end),
+        c == elem(ps,0),
+        do: %{category: c, products: elem(ps, 1)}
+
+  for v <- q do
+    IO.puts v.category <> ":"
+    for p <- v.products, do: IO.puts "   #{p.product_name}"
+  end
+
+  assert 4 == length(q)
+end
+```
+#### Output
+
+    Beverages
+      Chai
+      Chang
+      Guaraná Fantástica
+      Sasquatch Ale
+      Steeleye Stout
+      Côte de Blaye
+      Chartreuse verte
+      Ipoh Coffee
+      Laughing Lumberjack Lager
+      Outback Lager
+      Rhönbräu Klosterbier
+      Lakkalikööri
+    Condiments
+      Aniseed Syrup
+      Chef Anton's Cajun Seasoning
+      Chef Anton's Gumbo Mix
+      Grandma's Boysenberry Spread
+      Northwoods Cranberry Sauce
+      Genen Shouyu
+      Gula Malacca
+      Sirop d'érable
+      Vegie-spread
+      Louisiana Fiery Hot Pepper Sauce
+      Louisiana Hot Spiced Okra
+      Original Frankfurter grüne Soße
+    ...
+
+### linq104: Cross Join with Group Join
+```csharp
+//c#
+public void Linq104()
+{
+    string[] categories = new string[]{
+        "Beverages",
+        "Condiments",
+        "Vegetables",
+        "Dairy Products",
+        "Seafood" };
+
+    List<Product> products = GetProductList();
+
+    var q =
+        from c in categories
+        join p in products on c equals p.Category into ps
+        from p in ps
+        select new { Category = c, p.ProductName };
+
+    foreach (var v in q)
+    {
+        Console.WriteLine(v.ProductName + ": " + v.Category);
+    }
+}
+```
+```elixir
+# elixir
+test "linq104: Cross Join with Group Join" do
+  categories = ["Beverages",
+    "Condiments",
+    "Vegetables",
+    "Dairy Products",
+    "Seafood"]
+
+  products = get_product_list()
+
+  q = for c <- categories,
+        ps <- Enum.group_by(products, fn x -> x.category end),
+        p <- elem(ps,1),
+        c == elem(ps,0),
+        do: %{category: c, product_name: p.product_name}
+
+  for v <- q, do: IO.puts "#{v.product_name}: #{v.category}"
+
+  assert length(q) < length(products)
+end
+```
+#### Output
+
+    Chai : Beverages
+    Chang : Beverages
+    Guaraná Fantástica : Beverages
+    Sasquatch Ale : Beverages
+    Steeleye Stout : Beverages
+    Côte de Blaye : Beverages
+    Chartreuse verte : Beverages
+    Ipoh Coffee : Beverages
+    Laughing Lumberjack Lager : Beverages
+    Outback Lager : Beverages
+    Rhönbräu Klosterbier : Beverages
+    Lakkalikööri : Beverages
+    Aniseed Syrup : Condiments
+    Chef Anton's Cajun Seasoning : Condiments
+    Chef Anton's Gumbo Mix : Condiments
+    ...
+
+### linq105: Left Outer Join
+```csharp
+//c#
+public void Linq105()
+{
+    string[] categories = new string[]{
+        "Beverages",
+        "Condiments",
+        "Vegetables",
+        "Dairy Products",
+        "Seafood" };
+
+    List<Product> products = GetProductList();
+
+    var q =
+        from c in categories
+        join p in products on c equals p.Category into ps
+        from p in ps.DefaultIfEmpty()
+        select new { Category = c, ProductName = p == null ? "(No products)" : p.ProductName };
+
+    foreach (var v in q)
+    {
+        Console.WriteLine(v.ProductName + ": " + v.Category);
+    }
+}
+```
+```elixir
+# elixir
+test "linq105: Left Outer Join" do
+  categories = ["Beverages",
+    "Condiments",
+    "Vegetables",
+    "Dairy Products",
+    "Seafood"]
+
+  products = get_product_list()
+
+  q = left_outer_join(categories, products, & &1 == &2.category, & &1, & &1.product_name)
+    |> Enum.map(& %{category: elem(&1, 0), product_name: elem(&1, 1) || "(No products)"})
+
+  for v <- q, do: IO.puts "#{v.product_name}: #{v.category}"
+
+  assert length(q) < length(products)
+end
+```
+#### Output
+
+    Chai: Beverages
+    Chang: Beverages
+    Guaraná Fantástica: Beverages
+    Sasquatch Ale: Beverages
+    Steeleye Stout: Beverages
+    Côte de Blaye: Beverages
+    Chartreuse verte: Beverages
+    Ipoh Coffee: Beverages
+    Laughing Lumberjack Lager: Beverages
+    Outback Lager: Beverages
+    Rhönbräu Klosterbier: Beverages
+    Lakkalikööri: Beverages
+    Aniseed Syrup: Condiments
+    Chef Anton's Cajun Seasoning: Condiments
+    Chef Anton's Gumbo Mix: Condiments
+    Grandma's Boysenberry Spread: Condiments
+    Northwoods Cranberry Sauce: Condiments
+    Genen Shouyu: Condiments
+    Gula Malacca: Condiments
+    Sirop d'érable: Condiments
+    Vegie-spread: Condiments
+    Louisiana Fiery Hot Pepper Sauce: Condiments
+    Louisiana Hot Spiced Okra: Condiments
+    Original Frankfurter grüne Soße: Condiments
+    (No products): Vegetables
+    ...
+
+
+### Contributors
+
+  - [mythz](https://github.com/mythz) (Demis Bellot)
