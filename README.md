@@ -10,7 +10,11 @@ Compare Elixir to other LINQ examples written in:
  - [Swift](https://github.com/mythz/swift-linq-examples)
  - [Dart](https://github.com/mythz/dart-linq-examples)
 
-This is not a comparison with Ecto. My goal is translating LINQ examples to `for` comprehensions, `Enum` and `Stream`, since those differ the most from LINQ syntax and require more research for someone coming from C#.
+### Why not Ecto?
+
+This repo came out of a conversation with José Valim about the possibility of having "Ecto for Structs" in the same way C# has LINQ for Objects. José expressed his disbelief in having the same syntax (Ecto) for radically different semantics (databases vs in-memory enumerable data) and advised me to explore what `Enum`, `Streams` and `for` comprehensions have to offer.
+
+I'm only translating LINQ examples to `for` comprehensions, `Enum` and `Stream` since those differ the most from LINQ syntax and require more research for someone coming from C#.
 
 ### Pretty pretty please!
 
