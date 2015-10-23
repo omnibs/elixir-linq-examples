@@ -436,7 +436,7 @@ public void Linq9()
 test "linq9: Select - Anonymous Types 1" do
   words = ["aPPLE", "BlUeBeRrY", "cHeRry"]
 
-  upper_lower_words = words |> Enum.map(fn x -> %{lower: String.downcase(x), upper: String.capitalize(x)} end)
+  upper_lower_words = words |> Enum.map(fn x -> %{lower: String.downcase(x), upper: String.upcase(x)} end)
 
   for n <- upper_lower_words, do: IO.puts "Uppercase: #{n.upper}, Lowercase: #{n.lower}" end
 end
