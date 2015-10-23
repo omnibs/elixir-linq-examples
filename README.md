@@ -42,7 +42,7 @@ The samples below mirror the C# LINQ samples in the form of `ExUnit` unit tests 
 #### [LINQ - Ordering Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/ordering_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/SQL-Ordering-Operators-050af19e)
 #### [LINQ - Grouping Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/grouping_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-to-DataSets-Grouping-c62703ea)
 #### [LINQ - Set Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/set_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Set-Operators-374f34fe)
-#### [LINQ - Conversion Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/conversions_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Conversion-Operators-e4e59714)
+#### [LINQ - Conversion Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/conversion_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Conversion-Operators-e4e59714)
 #### [LINQ - Element Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/element_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Element-Operators-0f3f12ce)
 #### [LINQ - Generation Operators](https://github.com/omnibs/elixir-linq-examples/blob/master/test/generation_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Generation-Operators-8a3fbff7)
 #### [LINQ - Quantifiers](https://github.com/omnibs/elixir-linq-examples/blob/master/test/quantifiers_test.exs) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Quantifiers-f00e7e3e)
