@@ -8,7 +8,7 @@ defmodule ElixirLinqExamples.Grouping do
 
     number_groups = numbers
       |> Enum.group_by(fn x -> rem(x, 5) end)
-      |> Enum.map fn x -> %{remainder: elem(x,0), numbers: elem(x, 1)} end
+      |> Enum.map fn {rem,num} -> %{remainder: rem, numbers: num} end
 
     # for g <- number_groups do
     #   IO.puts "Numbers with a remainder of #{g.remainder} when divided by 5:"
@@ -23,7 +23,7 @@ defmodule ElixirLinqExamples.Grouping do
 
     word_groups = words 
       |> Enum.group_by(fn x -> String.at(x, 0) end)
-      |> Enum.map fn x -> %{first_letter: elem(x, 0), words: elem(x, 1)} end
+      |> Enum.map fn {fl, words} -> %{first_letter: fl, words: words} end
 
     # for g <- word_groups do
     #   IO.puts "Words that start with the letter '#{g.first_letter}'"
@@ -38,7 +38,7 @@ defmodule ElixirLinqExamples.Grouping do
 
     order_groups = products
       |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map fn x -> %{category: elem(x,0), products: elem(x,1)} end
+      |> Enum.map fn {cat, prods} -> %{category: cat, products: prods} end
 
     # IO.inspect order_groups
 
@@ -57,13 +57,18 @@ defmodule ElixirLinqExamples.Grouping do
               c.orders
                 |> Enum.group_by(fn o -> o.orderdate.year end)
                 |> Enum.map(
-                  fn yg -> 
+                  fn {year, year_orders} -> 
                     %{
-                      year: elem(yg, 0),
+                      year: year,
                       month_groups:
-                        elem(yg, 1)
+                        year_orders
                           |> Enum.group_by(fn o -> o.orderdate.month end)
-                          |> Enum.map(fn mg -> %{month: elem(mg, 0), orders: elem(mg, 1)} end)
+                          |> Enum.map(fn {month, month_orders} -> 
+                            %{
+                              month: month, 
+                              orders: month_orders
+                            } 
+                          end)
                     }
                   end)
           }
@@ -102,9 +107,9 @@ defmodule ElixirLinqExamples.Grouping do
           |> String.codepoints 
           |> Enum.sort 
         end)
-      |> Enum.map(fn x -> elem(x, 1) |> Enum.map(&String.upcase/1) end)
+      |> Enum.map(fn {_, words} -> words |> Enum.map(&String.upcase/1) end)
 
-    #for g <- order_groups, do: IO.inspect g
+    # for g <- order_groups, do: IO.inspect g
 
     assert 3 == length(order_groups)
   end

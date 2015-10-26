@@ -876,9 +876,9 @@ test "linq19: SelectMany - Indexed" do
   cutoff_date = Timex.Date.from({1997, 1, 1})
 
   customerOrders = 
-    for c <- Enum.with_index(customers),
-        o <- elem(c,0).orders,
-        do: "Customer ##{elem(c,1) + 1} has an order with OrderId #{o.id}"
+    for {c, idx} <- Enum.with_index(customers),
+        o <- c.orders,
+        do: "Customer ##{idx + 1} has an order with OrderId #{o.id}"
 
   IO.inspect customerOrders
 
@@ -1774,7 +1774,7 @@ test "linq40: GroupBy - Simple 1" do
 
   number_groups = numbers
     |> Enum.group_by(fn x -> rem(x, 5) end)
-    |> Enum.map fn x -> %{remainder: elem(x,0), numbers: elem(x, 1)} end
+    |> Enum.map fn {rem,num} -> %{remainder: rem, numbers: num} end
 
   for g <- number_groups do
     IO.puts "Numbers with a remainder of #{g.remainder} when divided by 5:"
@@ -1831,7 +1831,7 @@ test "linq41: GroupBy - Simple 2" do
 
   word_groups = words 
     |> Enum.group_by(fn x -> String.at(x, 0) end)
-    |> Enum.map fn x -> %{first_letter: elem(x, 0), words: elem(x, 1)} end
+    |> Enum.map fn {fl, words} -> %{first_letter: fl, words: words} end
 
   for g <- word_groups do
     IO.puts "Words that start with the letter '#{g.first_letter}'"
@@ -1875,7 +1875,7 @@ test "linq42: GroupBy - Simple 3" do
 
   order_groups = products
     |> Enum.group_by(fn x -> x.category end)
-    |> Enum.map fn x -> %{category: elem(x,0), products: elem(x,1)} end
+    |> Enum.map fn {cat, prods} -> %{category: cat, products: prods} end
 
   IO.inspect order_groups
 
@@ -1931,13 +1931,18 @@ test "linq43: GroupBy - Nested" do
             c.orders
               |> Enum.group_by(fn o -> o.orderdate.year end)
               |> Enum.map(
-                fn yg -> 
+                fn {year, year_orders} -> 
                   %{
-                    year: elem(yg, 0),
+                    year: year,
                     month_groups:
-                      elem(yg, 1)
+                      year_orders
                         |> Enum.group_by(fn o -> o.orderdate.month end)
-                        |> Enum.map(fn mg -> %{month: elem(mg, 0), orders: elem(mg, 1)} end)
+                        |> Enum.map(fn {month, month_orders} -> 
+                          %{
+                            month: month, 
+                            orders: month_orders
+                          } 
+                        end)
                   }
                 end)
         }
@@ -2018,7 +2023,7 @@ test "linq45: GroupBy - Comparer, Mapped" do
         |> String.codepoints 
         |> Enum.sort 
       end)
-    |> Enum.map(fn x -> elem(x, 1) |> Enum.map(&String.upcase/1) end)
+    |> Enum.map(fn {_, words} -> words |> Enum.map(&String.upcase/1) end)
 
   for g <- order_groups, do: IO.inspect g
 
@@ -2874,10 +2879,12 @@ test "linq69: Any - Grouped" do
 
   product_groups = products
     |> Enum.group_by(fn x -> x.category end)
-    |> Enum.filter(fn x -> elem(x, 1) |> Enum.any?(fn p -> p.units_in_stock == 0 end) end)
-    |> Enum.map fn x -> %{category: elem(x, 0), products: elem(x, 1)} end
+    |> Enum.filter(fn {_,prods} -> prods |> Enum.any?(fn p -> p.units_in_stock == 0 end) end)
+    |> Enum.map fn {cat, prods} -> %{category: cat, products: prods} end
 
   IO.inspect product_groups
+
+  assert 3 == length(product_groups)
 end
 ```
 #### Output
@@ -2938,10 +2945,12 @@ test "linq72: All - Grouped" do
 
   product_groups = products
     |> Enum.group_by(fn x -> x.category end)
-    |> Enum.filter(fn x -> elem(x, 1) |> Enum.all?(fn p -> p.units_in_stock > 0 end) end)
-    |> Enum.map fn x -> %{category: elem(x, 0), products: elem(x, 1)} end
+    |> Enum.filter(fn {_,prods} -> prods |> Enum.all?(fn p -> p.units_in_stock > 0 end) end)
+    |> Enum.map fn {cat, prods} -> %{category: cat, products: prods} end
 
   IO.inspect product_groups
+
+  assert 5 == length(product_groups)
 end
 ```
 #### Output
@@ -3080,7 +3089,7 @@ test "linq77: Count - Grouped" do
 
   category_counts = products
     |> Enum.group_by(fn x -> x.category end)
-    |> Enum.map fn x -> %{category: elem(x, 0), product_count: elem(x, 1) |> Enum.count} end
+    |> Enum.map fn {cat, prods} -> %{category: cat, product_count: prods |> Enum.count} end
 
   IO.inspect category_counts
 
@@ -3178,10 +3187,10 @@ test "linq80: Sum - Grouped" do
 
   categories = products
     |> Enum.group_by(fn x -> x.category end)
-    |> Enum.map(fn g ->
+    |> Enum.map(fn {cat, prods} ->
       %{
-        category: elem(g, 0),
-        total_units_in_stock: elem(g, 1)
+        category: cat,
+        total_units_in_stock: prods
           |> Enum.map(fn p -> p.units_in_stock end)
           |> Enum.sum
       }
@@ -3281,10 +3290,10 @@ test "linq83: Min - Grouped" do
 
   categories = products
     |> Enum.group_by(fn x -> x.category end)
-    |> Enum.map(fn g ->
+    |> Enum.map(fn {cat, prods} ->
       %{
-        category: elem(g, 0),
-        cheapest_price: elem(g, 1)
+        category: cat,
+        cheapest_price: prods
           |> Enum.map(fn p -> p.unit_price end)
           |> Enum.min
       }
@@ -3329,13 +3338,13 @@ test "linq84: Min - Elements" do
 
   categories = products
     |> Enum.group_by(fn x -> x.category end)
-    |> Enum.map(fn g ->
-      min_price = elem(g, 1)
+    |> Enum.map(fn {cat, prods} ->
+      min_price = prods
           |> Enum.map(fn p -> p.unit_price end)
           |> Enum.min
       %{
-        category: elem(g, 0),
-        cheapest_products: elem(g, 1)
+        category: cat,
+        cheapest_products: prods
           |> Enum.filter(fn p -> p.unit_price == min_price end)
       }
     end)
@@ -3434,10 +3443,10 @@ test "linq87: Max - Grouped" do
 
   categories = products
     |> Enum.group_by(fn x -> x.category end)
-    |> Enum.map(fn g ->
+    |> Enum.map(fn {cat, prods} ->
       %{
-        category: elem(g, 0),
-        most_expensive_price: elem(g, 1)
+        category: cat,
+        most_expensive_price: prods
           |> Enum.map(fn p -> p.unit_price end)
           |> Enum.max
       }
@@ -3482,13 +3491,13 @@ test "linq88: Max - Elements" do
 
   categories = products
     |> Enum.group_by(fn x -> x.category end)
-    |> Enum.map(fn g ->
-      max_price = elem(g, 1)
+    |> Enum.map(fn {cat, prods} ->
+      max_price = prods
           |> Enum.map(fn p -> p.unit_price end)
           |> Enum.max
       %{
-        category: elem(g, 0),
-        most_expensive_products: elem(g, 1)
+        category: cat,
+        most_expensive_products: prods
           |> Enum.filter(fn p -> p.unit_price == max_price end)
       }
     end)
@@ -3589,10 +3598,10 @@ test "linq91: Average - Grouped" do
 
   categories = products
     |> Enum.group_by(fn x -> x.category end)
-    |> Enum.map(fn g ->
+    |> Enum.map(fn {cat, prods} ->
       %{
-        category: elem(g, 0),
-        average_price: elem(g, 1)
+        category: cat,
+        average_price: prods
           |> Enum.map(fn p -> p.unit_price end)
           |> average
       }
@@ -4149,9 +4158,9 @@ test "linq103: Group Join" do
   products = get_product_list()
 
   q = for c <- categories,
-        ps <- Enum.group_by(products, fn x -> x.category end),
-        c == elem(ps,0),
-        do: %{category: c, products: elem(ps, 1)}
+        {cat, prod} <- Enum.group_by(products, fn x -> x.category end),
+        c == cat,
+        do: %{category: c, products: prod}
 
   for v <- q do
     IO.puts v.category <> ":"
@@ -4229,9 +4238,9 @@ test "linq104: Cross Join with Group Join" do
   products = get_product_list()
 
   q = for c <- categories,
-        ps <- Enum.group_by(products, fn x -> x.category end),
-        p <- elem(ps,1),
-        c == elem(ps,0),
+        {cat, prods} <- Enum.group_by(products, fn x -> x.category end),
+        p <- prods,
+        c == cat,
         do: %{category: c, product_name: p.product_name}
 
   for v <- q, do: IO.puts "#{v.product_name}: #{v.category}"
@@ -4296,7 +4305,7 @@ test "linq105: Left Outer Join" do
   products = get_product_list()
 
   q = left_outer_join(categories, products, & &1 == &2.category, & &1, & &1.product_name)
-    |> Enum.map(& %{category: elem(&1, 0), product_name: elem(&1, 1) || "(No products)"})
+    |> Enum.map(fn {cat, prod} -> %{category: cat, product_name: prod || "(No products)"} end)
 
   for v <- q, do: IO.puts "#{v.product_name}: #{v.category}"
 

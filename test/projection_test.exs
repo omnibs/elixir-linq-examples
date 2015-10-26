@@ -167,9 +167,9 @@ defmodule ElixirLinqExamples.Projection do
     cutoff_date = Timex.Date.from({1997, 1, 1})
 
     customerOrders = 
-      for c <- Enum.with_index(customers),
-          o <- elem(c,0).orders,
-          do: "Customer ##{elem(c,1) + 1} has an order with OrderId #{o.id}"
+      for {c, idx} <- Enum.with_index(customers),
+          o <- c.orders,
+          do: "Customer ##{idx + 1} has an order with OrderId #{o.id}"
 
     # IO.inspect customerOrders
 

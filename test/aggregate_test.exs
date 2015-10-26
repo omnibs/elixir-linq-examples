@@ -42,7 +42,7 @@ defmodule ElixirLinqExamples.Aggregate do
 
     category_counts = products
       |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map fn x -> %{category: elem(x, 0), product_count: elem(x, 1) |> Enum.count} end
+      |> Enum.map fn {cat, prods} -> %{category: cat, product_count: prods |> Enum.count} end
 
     #IO.inspect category_counts
 
@@ -76,10 +76,10 @@ defmodule ElixirLinqExamples.Aggregate do
 
     categories = products
       |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map(fn g ->
+      |> Enum.map(fn {cat, prods} ->
         %{
-          category: elem(g, 0),
-          total_units_in_stock: elem(g, 1)
+          category: cat,
+          total_units_in_stock: prods
             |> Enum.map(fn p -> p.units_in_stock end)
             |> Enum.sum
         }
@@ -115,10 +115,10 @@ defmodule ElixirLinqExamples.Aggregate do
 
     categories = products
       |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map(fn g ->
+      |> Enum.map(fn {cat, prods} ->
         %{
-          category: elem(g, 0),
-          cheapest_price: elem(g, 1)
+          category: cat,
+          cheapest_price: prods
             |> Enum.map(fn p -> p.unit_price end)
             |> Enum.min
         }
@@ -134,13 +134,13 @@ defmodule ElixirLinqExamples.Aggregate do
 
     categories = products
       |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map(fn g ->
-        min_price = elem(g, 1)
+      |> Enum.map(fn {cat, prods} ->
+        min_price = prods
             |> Enum.map(fn p -> p.unit_price end)
             |> Enum.min
         %{
-          category: elem(g, 0),
-          cheapest_products: elem(g, 1)
+          category: cat,
+          cheapest_products: prods
             |> Enum.filter(fn p -> p.unit_price == min_price end)
         }
       end)
@@ -175,10 +175,10 @@ defmodule ElixirLinqExamples.Aggregate do
 
     categories = products
       |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map(fn g ->
+      |> Enum.map(fn {cat, prods} ->
         %{
-          category: elem(g, 0),
-          most_expensive_price: elem(g, 1)
+          category: cat,
+          most_expensive_price: prods
             |> Enum.map(fn p -> p.unit_price end)
             |> Enum.max
         }
@@ -194,13 +194,13 @@ defmodule ElixirLinqExamples.Aggregate do
 
     categories = products
       |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map(fn g ->
-        max_price = elem(g, 1)
+      |> Enum.map(fn {cat, prods} ->
+        max_price = prods
             |> Enum.map(fn p -> p.unit_price end)
             |> Enum.max
         %{
-          category: elem(g, 0),
-          most_expensive_products: elem(g, 1)
+          category: cat,
+          most_expensive_products: prods
             |> Enum.filter(fn p -> p.unit_price == max_price end)
         }
       end)
@@ -237,10 +237,10 @@ defmodule ElixirLinqExamples.Aggregate do
 
     categories = products
       |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map(fn g ->
+      |> Enum.map(fn {cat, prods} ->
         %{
-          category: elem(g, 0),
-          average_price: elem(g, 1)
+          category: cat,
+          average_price: prods
             |> Enum.map(fn p -> p.unit_price end)
             |> average
         }

@@ -7,9 +7,9 @@ defmodule ElixirLinqExamples.Util do
 	end
 
   def average(list) do
-    sum_and_count = list
+    {sum, count} = list
       |> Enum.reduce({0,0}, fn x, {acc, count} -> {acc + x, count + 1} end)
-    elem(sum_and_count, 0) / elem(sum_and_count, 1)
+    sum / count
   end
 
   def left_outer_join(list1, list2, equality, mapper1 \\ & &1, mapper2 \\ & &1) do
