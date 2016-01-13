@@ -8,7 +8,7 @@ defmodule ElixirLinqExamples.Grouping do
 
     number_groups = numbers
       |> Enum.group_by(fn x -> rem(x, 5) end)
-      |> Enum.map fn {rem,num} -> %{remainder: rem, numbers: num} end
+      |> Enum.map(fn {rem,num} -> %{remainder: rem, numbers: num} end)
 
     # for g <- number_groups do
     #   IO.puts "Numbers with a remainder of #{g.remainder} when divided by 5:"
@@ -23,7 +23,7 @@ defmodule ElixirLinqExamples.Grouping do
 
     word_groups = words 
       |> Enum.group_by(fn x -> String.at(x, 0) end)
-      |> Enum.map fn {fl, words} -> %{first_letter: fl, words: words} end
+      |> Enum.map(fn {fl, words} -> %{first_letter: fl, words: words} end)
 
     # for g <- word_groups do
     #   IO.puts "Words that start with the letter '#{g.first_letter}'"
@@ -38,7 +38,7 @@ defmodule ElixirLinqExamples.Grouping do
 
     order_groups = products
       |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map fn {cat, prods} -> %{category: cat, products: prods} end
+      |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
 
     # IO.inspect order_groups
 

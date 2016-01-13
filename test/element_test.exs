@@ -36,7 +36,7 @@ defmodule ElixirLinqExamples.Element do
   test "linq62: FirstOrDefault - Condition" do
     products = get_product_list()
 
-    product789 = products |> Enum.find fn x -> x.product_id == 789 end
+    product789 = products |> Enum.find(fn x -> x.product_id == 789 end)
 
     # IO.puts "Product 789 exists: #{product789 != nil}"
 

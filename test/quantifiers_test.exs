@@ -6,7 +6,7 @@ defmodule ElixirLinqExamples.Quantifiers do
   test "linq67: Any - Simple" do
     words = ["believe", "relief", "receipt", "field"]
 
-    i_after_e = words |> Enum.any? fn x -> String.contains?(x, "ei") end
+    i_after_e = words |> Enum.any?(fn x -> String.contains?(x, "ei") end)
 
     # IO.puts "There is a word that contains in the list that contains 'ei': #{i_after_e != nil}"
 
@@ -19,7 +19,7 @@ defmodule ElixirLinqExamples.Quantifiers do
     product_groups = products
       |> Enum.group_by(fn x -> x.category end)
       |> Enum.filter(fn {_,prods} -> prods |> Enum.any?(fn p -> p.units_in_stock == 0 end) end)
-      |> Enum.map fn {cat, prods} -> %{category: cat, products: prods} end
+      |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
 
     # IO.inspect product_groups
 
@@ -44,7 +44,7 @@ defmodule ElixirLinqExamples.Quantifiers do
     product_groups = products
       |> Enum.group_by(fn x -> x.category end)
       |> Enum.filter(fn {_,prods} -> prods |> Enum.all?(fn p -> p.units_in_stock > 0 end) end)
-      |> Enum.map fn {cat, prods} -> %{category: cat, products: prods} end
+      |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
 
     # IO.inspect product_groups
 

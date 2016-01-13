@@ -6,7 +6,7 @@ defmodule ElixirLinqExamples.Partitioning do
   test "linq20: Take - Simple" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0];
 
-    first_3_numbers = numbers |> Enum.take 3
+    first_3_numbers = numbers |> Enum.take(3)
 
     # IO.puts "First 3 numbers:"
     # for n <- first_3_numbers, do: IO.puts n
@@ -22,7 +22,7 @@ defmodule ElixirLinqExamples.Partitioning do
           o <- c.orders,
           c.region == "WA",
           do: %{customer_id: c.id, order_id: o.id, order_date: o.orderdate})
-      |> Enum.take 3
+      |> Enum.take(3)
 
     # IO.puts "First 3 orders in WA:"
     # for o <- first_3_wa_orders, do: IO.inspect(o)
@@ -33,7 +33,7 @@ defmodule ElixirLinqExamples.Partitioning do
   test "linq22: Skip - Simple" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-    all_but_first_4_numbers = numbers |> Enum.drop 4
+    all_but_first_4_numbers = numbers |> Enum.drop(4)
 
     # IO.puts "All but first 4 numbers:"
     # for n <- numbers, do: IO.puts n
@@ -50,7 +50,7 @@ defmodule ElixirLinqExamples.Partitioning do
           c.region == "WA",
           do: %{customer_id: c.id, order_id: o.id, order_date: o.orderdate}
 
-    all_but_first_2_orders = wa_orders |> Enum.drop 2
+    all_but_first_2_orders = wa_orders |> Enum.drop(2)
 
     # IO.puts "All but first 2 orders in WA:"
     # for o <- all_but_first_2_orders, do: IO.inspect o
@@ -60,7 +60,7 @@ defmodule ElixirLinqExamples.Partitioning do
   test "linq24: TakeWhile - Simple" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-    first_numbers_less_than_6 = numbers |> Enum.take_while fn x -> x < 6 end
+    first_numbers_less_than_6 = numbers |> Enum.take_while(fn x -> x < 6 end)
 
     # IO.puts "First numbers less than 6:"
     # for n <- first_numbers_less_than_6, do: IO.puts n
@@ -85,7 +85,7 @@ defmodule ElixirLinqExamples.Partitioning do
   test "linq26: SkipWhile - Simple" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-    all_but_first_3_numbers = numbers |> Enum.drop_while fn x -> rem(x, 3) != 0 end
+    all_but_first_3_numbers = numbers |> Enum.drop_while(fn x -> rem(x, 3) != 0 end)
 
     # IO.puts "All elements starting from first element divisible by 3:"
     # for n <- all_but_first_3_numbers, do: IO.puts n

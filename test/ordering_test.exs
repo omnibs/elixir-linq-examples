@@ -37,7 +37,7 @@ defmodule ElixirLinqExamples.Ordering do
   test "linq31: OrderBy - Comparer" do
     words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"];
 
-    sorted_words = words |> Enum.sort_by &String.downcase/1
+    sorted_words = words |> Enum.sort_by(&String.downcase/1)
 
     # IO.inspect sorted_words
 
@@ -58,7 +58,7 @@ defmodule ElixirLinqExamples.Ordering do
   test "linq33: OrderByDescending - Simple 2" do
     products = get_product_list()
 
-    sorted_products = products |> Enum.sort &(&1.units_in_stock >= &2.units_in_stock)
+    sorted_products = products |> Enum.sort(&(&1.units_in_stock >= &2.units_in_stock))
 
     # IO.inspect sorted_products
 
@@ -68,7 +68,7 @@ defmodule ElixirLinqExamples.Ordering do
   test "linq34: OrderByDescending - Comparer" do
     words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
 
-    sorted_words = words |> Enum.sort &(String.downcase(&1) >= String.downcase(&2))
+    sorted_words = words |> Enum.sort(&(String.downcase(&1) >= String.downcase(&2)))
 
     # IO.inspect sorted_words
 
@@ -117,7 +117,7 @@ defmodule ElixirLinqExamples.Ordering do
 
     sorted_words = words
       |> Enum.sort(fn x,y -> String.downcase(x) >= String.downcase(y) end)
-      |> Enum.sort_by &(String.length(&1))
+      |> Enum.sort_by(&String.length/1)
 
     # IO.inspect sorted_words
 

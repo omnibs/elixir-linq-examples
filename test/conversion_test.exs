@@ -49,7 +49,7 @@ defmodule ElixirLinqExamples.Conversion do
   test "linq57: OfType" do
     numbers = [nil, 1.0, "two", 3, "four", 5, "six", 7.0]
 
-    doubles = numbers |> Enum.filter &is_float/1
+    doubles = numbers |> Enum.filter(&is_float/1)
 
     # IO.puts "Numbers stored as doubles:"
     # for d <- doubles, do: IO.puts d

@@ -922,7 +922,7 @@ public void Linq20()
 test "linq20: Take - Simple" do
   numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0];
 
-  first_3_numbers = numbers |> Enum.take 3
+  first_3_numbers = numbers |> Enum.take(3)
 
   IO.puts "First 3 numbers:"
   for n <- first_3_numbers, do: IO.puts n
@@ -968,7 +968,7 @@ test "linq21: Take - Nested" do
         o <- c.orders,
         c.region == "WA",
         do: %{customer_id: c.id, order_id: o.id, order_date: o.orderdate})
-    |> Enum.take 3
+    |> Enum.take(3)
 
   IO.puts "First 3 orders in WA:"
   for o <- first_3_wa_orders, do: IO.inspect(o)
@@ -1004,7 +1004,7 @@ public void Linq22()
 test "linq22: Skip - Simple" do
   numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-  all_but_first_4_numbers = numbers |> Enum.drop 4
+  all_but_first_4_numbers = numbers |> Enum.drop(4)
 
   IO.puts "All but first 4 numbers:"
   for n <- numbers, do: IO.puts n
@@ -1055,7 +1055,7 @@ test "linq23: Skip - Nested" do
         c.region == "WA",
         do: %{customer_id: c.id, order_id: o.id, order_date: o.orderdate}
 
-  all_but_first_2_orders = wa_orders |> Enum.drop 2
+  all_but_first_2_orders = wa_orders |> Enum.drop(2)
 
   IO.puts "All but first 2 orders in WA:"
   for o <- all_but_first_2_orders, do: IO.inspect o
@@ -1105,7 +1105,7 @@ public void Linq24()
 test "linq24: TakeWhile - Simple" do
   numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-  first_numbers_less_than_6 = numbers |> Enum.take_while fn x -> x < 6 end
+  first_numbers_less_than_6 = numbers |> Enum.take_while(fn x -> x < 6 end)
 
   IO.puts "First numbers less than 6:"
   for n <- first_numbers_less_than_6, do: IO.puts n
@@ -1180,7 +1180,7 @@ public void Linq26()
 test "linq26: SkipWhile - Simple" do
   numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-  all_but_first_3_numbers = numbers |> Enum.drop_while fn x -> rem(x, 3) != 0 end
+  all_but_first_3_numbers = numbers |> Enum.drop_while(fn x -> rem(x, 3) != 0 end)
 
   IO.puts "All elements starting from first element divisible by 3:"
   for n <- all_but_first_3_numbers, do: IO.puts n
@@ -1387,7 +1387,7 @@ public void Linq31()
 test "linq31: OrderBy - Comparer" do
   words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"];
 
-  sorted_words = words |> Enum.sort_by &String.downcase/1
+  sorted_words = words |> Enum.sort_by(&String.downcase/1)
 
   IO.inspect sorted_words
 
@@ -1464,7 +1464,7 @@ public void Linq33()
 test "linq33: OrderByDescending - Simple 2" do
   products = get_product_list()
 
-  sorted_products = products |> Enum.sort &(&1.units_in_stock >= &2.units_in_stock)
+  sorted_products = products |> Enum.sort(&(&1.units_in_stock >= &2.units_in_stock))
 
   IO.inspect sorted_products
 
@@ -1497,7 +1497,7 @@ public void Linq34()
 test "linq34: OrderByDescending - Comparer" do
   words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
 
-  sorted_words = words |> Enum.sort &(String.downcase(&1) >= String.downcase(&2))
+  sorted_words = words |> Enum.sort(&(String.downcase(&1) >= String.downcase(&2)))
 
   IO.inspect sorted_words
 
@@ -1661,7 +1661,7 @@ test "linq38: ThenByDescending - Comparer" do
 
   sorted_words = words
     |> Enum.sort(fn x,y -> String.downcase(x) >= String.downcase(y) end)
-    |> Enum.sort_by &(String.length(&1))
+    |> Enum.sort_by(&String.length/1)
 
   IO.inspect sorted_words
 
@@ -1774,7 +1774,7 @@ test "linq40: GroupBy - Simple 1" do
 
   number_groups = numbers
     |> Enum.group_by(fn x -> rem(x, 5) end)
-    |> Enum.map fn {rem,num} -> %{remainder: rem, numbers: num} end
+    |> Enum.map(fn {rem,num} -> %{remainder: rem, numbers: num} end)
 
   for g <- number_groups do
     IO.puts "Numbers with a remainder of #{g.remainder} when divided by 5:"
@@ -1831,7 +1831,7 @@ test "linq41: GroupBy - Simple 2" do
 
   word_groups = words 
     |> Enum.group_by(fn x -> String.at(x, 0) end)
-    |> Enum.map fn {fl, words} -> %{first_letter: fl, words: words} end
+    |> Enum.map(fn {fl, words} -> %{first_letter: fl, words: words} end)
 
   for g <- word_groups do
     IO.puts "Words that start with the letter '#{g.first_letter}'"
@@ -1875,7 +1875,7 @@ test "linq42: GroupBy - Simple 3" do
 
   order_groups = products
     |> Enum.group_by(fn x -> x.category end)
-    |> Enum.map fn {cat, prods} -> %{category: cat, products: prods} end
+    |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
 
   IO.inspect order_groups
 
@@ -2574,7 +2574,7 @@ public void Linq57()
 test "linq57: OfType" do
   numbers = [nil, 1.0, "two", 3, "four", 5, "six", 7.0]
 
-  doubles = numbers |> Enum.filter &is_float/1
+  doubles = numbers |> Enum.filter(&is_float/1)
 
   IO.puts "Numbers stored as doubles:"
   for d <- doubles, do: IO.puts d
@@ -2696,7 +2696,7 @@ public void Linq62()
 test "linq62: FirstOrDefault - Condition" do
   products = get_product_list()
 
-  product789 = products |> Enum.find fn x -> x.product_id == 789 end
+  product789 = products |> Enum.find(fn x -> x.product_id == 789 end)
 
   IO.puts "Product 789 exists: #{product789 != nil}"
 
@@ -2767,7 +2767,7 @@ test "linq65: Range" do
   require Integer
 
   numbers = 100..151
-    |> Enum.map fn x -> %{number: x, odd_even: if(Integer.is_odd(x), do: "odd", else: "even")} end
+    |> Enum.map(fn x -> %{number: x, odd_even: if(Integer.is_odd(x), do: "odd", else: "even")} end)
 
   for n <- numbers, do: IO.puts "The number #{n.number} is #{n.odd_even}"
 
@@ -2846,7 +2846,7 @@ public void Linq67()
 test "linq67: Any - Simple" do
   words = ["believe", "relief", "receipt", "field"]
 
-  i_after_e = words |> Enum.any? fn x -> String.contains?(x, "ei") end
+  i_after_e = words |> Enum.any?(fn x -> String.contains?(x, "ei") end)
 
   IO.puts "There is a word that contains in the list that contains 'ei': #{i_after_e != nil}"
 
@@ -2880,7 +2880,7 @@ test "linq69: Any - Grouped" do
   product_groups = products
     |> Enum.group_by(fn x -> x.category end)
     |> Enum.filter(fn {_,prods} -> prods |> Enum.any?(fn p -> p.units_in_stock == 0 end) end)
-    |> Enum.map fn {cat, prods} -> %{category: cat, products: prods} end
+    |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
 
   IO.inspect product_groups
 
@@ -2946,7 +2946,7 @@ test "linq72: All - Grouped" do
   product_groups = products
     |> Enum.group_by(fn x -> x.category end)
     |> Enum.filter(fn {_,prods} -> prods |> Enum.all?(fn p -> p.units_in_stock > 0 end) end)
-    |> Enum.map fn {cat, prods} -> %{category: cat, products: prods} end
+    |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
 
   IO.inspect product_groups
 
@@ -3089,7 +3089,7 @@ test "linq77: Count - Grouped" do
 
   category_counts = products
     |> Enum.group_by(fn x -> x.category end)
-    |> Enum.map fn {cat, prods} -> %{category: cat, product_count: prods |> Enum.count} end
+    |> Enum.map(fn {cat, prods} -> %{category: cat, product_count: prods |> Enum.count} end)
 
   IO.inspect category_counts
 

@@ -42,7 +42,7 @@ defmodule ElixirLinqExamples.Aggregate do
 
     category_counts = products
       |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map fn {cat, prods} -> %{category: cat, product_count: prods |> Enum.count} end
+      |> Enum.map(fn {cat, prods} -> %{category: cat, product_count: prods |> Enum.count} end)
 
     #IO.inspect category_counts
 
