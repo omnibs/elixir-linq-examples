@@ -40,8 +40,8 @@ defmodule ElixirLinqExamples.Projection do
     words = ["aPPLE", "BlUeBeRrY", "cHeRry"]
 
     upper_lower_words = words |> Enum.map(fn x -> %{lower: String.downcase(x), upper: String.upcase(x)} end)
-
-    # for n <- upper_lower_words, do: IO.puts "Uppercase: #{n.upper}, Lowercase: #{n.lower}" end
+    first = upper_lower_words |> Enum.at(0)
+    assert first == %{lower: "apple", upper: "APPLE"}
   end
 
   test "linq10: Select - Anonymous Types 2" do
@@ -68,9 +68,9 @@ defmodule ElixirLinqExamples.Projection do
   test "linq12: Select - Indexed" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-    nums_in_place = numbers 
-      |> Stream.with_index 
-      |> Stream.map(fn {x,idx} -> %{num: x, in_place: x == idx} end) 
+    nums_in_place = numbers
+      |> Stream.with_index
+      |> Stream.map(fn {x,idx} -> %{num: x, in_place: x == idx} end)
       |> Enum.to_list
 
     # IO.puts "Number: In-place?"
@@ -106,7 +106,7 @@ defmodule ElixirLinqExamples.Projection do
   test "linq15: SelectMany - Compound from 2" do
     customers = get_customer_list()
 
-    orders = 
+    orders =
       for c <- customers,
           o <- c.orders,
           do: %{customer_id: c.id, order_id: o.id, total: o.total}
@@ -119,7 +119,7 @@ defmodule ElixirLinqExamples.Projection do
   test "linq16: SelectMany - Compound from 3" do
     customers = get_customer_list()
 
-    orders = 
+    orders =
       for c <- customers,
           o <- c.orders,
           Timex.Date.compare(o.orderdate, Timex.Date.from({1998, 1, 1})) >= 0,
@@ -133,7 +133,7 @@ defmodule ElixirLinqExamples.Projection do
   test "linq17: SelectMany - from Assignment" do
     customers = get_customer_list()
 
-    orders = 
+    orders =
       for c <- customers,
           o <- c.orders,
           elem(Float.parse(o.total), 0) >= 2000.0,
@@ -149,7 +149,7 @@ defmodule ElixirLinqExamples.Projection do
 
     cutoff_date = Timex.Date.from({1997, 1, 1})
 
-    orders = 
+    orders =
       for c <- customers,
           o <- c.orders,
           c.region == "WA",
@@ -164,15 +164,13 @@ defmodule ElixirLinqExamples.Projection do
   test "linq19: SelectMany - Indexed" do
     customers = get_customer_list()
 
-    cutoff_date = Timex.Date.from({1997, 1, 1})
-
-    customerOrders = 
+    customerOrders =
       for {c, idx} <- Enum.with_index(customers),
           o <- c.orders,
           do: "Customer ##{idx + 1} has an order with OrderId #{o.id}"
 
-    # IO.inspect customerOrders
-
+    assert customerOrders |> Enum.at(0) == "Customer #1 has an order with OrderId 10643"
+    assert customerOrders |> Enum.at(-1) == "Customer #91 has an order with OrderId 11044"
     assert length(customerOrders) == 830
   end
 end

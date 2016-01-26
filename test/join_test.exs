@@ -13,10 +13,10 @@ defmodule ElixirLinqExamples.Join do
 
     products = get_product_list()
 
-    q = 
-      for c <- categories, 
-        p <- products, 
-        p.category == c, 
+    q =
+      for c <- categories,
+        p <- products,
+        p.category == c,
         do: %{category: c, product_name: p.product_name}
 
     # for v <- q, do: IO.puts "#{v.product_name}: #{v.category}"

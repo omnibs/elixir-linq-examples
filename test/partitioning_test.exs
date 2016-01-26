@@ -17,7 +17,7 @@ defmodule ElixirLinqExamples.Partitioning do
   test "linq21: Take - Nested" do
     customers = get_customer_list()
 
-    first_3_wa_orders = 
+    first_3_wa_orders =
       (for c <- customers,
           o <- c.orders,
           c.region == "WA",
@@ -44,7 +44,7 @@ defmodule ElixirLinqExamples.Partitioning do
   test "linq23: Skip - Nested" do
     customers = get_customer_list()
 
-    wa_orders = 
+    wa_orders =
       for c <- customers,
           o <- c.orders,
           c.region == "WA",
@@ -71,7 +71,7 @@ defmodule ElixirLinqExamples.Partitioning do
   test "linq25: TakeWhile - Indexed" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-    first_small_numbers = numbers 
+    first_small_numbers = numbers
       |> Enum.with_index
       |> Enum.take_while(fn {n, index} -> n >= index end)
       |> Enum.map(fn {x,_} -> x end)
@@ -96,7 +96,7 @@ defmodule ElixirLinqExamples.Partitioning do
   test "linq27: SkipWhile - Indexed" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-    later_numbers = numbers 
+    later_numbers = numbers
       |> Enum.with_index
       |> Enum.drop_while(fn {n, index} -> n >= index end)
       |> Enum.map(fn {x,_} -> x end)

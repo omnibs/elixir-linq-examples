@@ -26,7 +26,7 @@ defmodule ElixirLinqExamples.Ordering do
   test "linq30: OrderBy - Simple 3" do
     products = get_product_list()
 
-    sorted_products = products 
+    sorted_products = products
       |> Enum.sort_by(fn x -> x.product_name end)
 
     # IO.inspect sorted_products
@@ -78,8 +78,8 @@ defmodule ElixirLinqExamples.Ordering do
   test "linq35: ThenBy - Simple" do
     digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
-    sorted_digits = digits 
-      |> Enum.sort 
+    sorted_digits = digits
+      |> Enum.sort
       |> Enum.sort_by(fn x -> String.length(x) end)
 
     # IO.puts "Sorted digits:"
@@ -91,8 +91,8 @@ defmodule ElixirLinqExamples.Ordering do
   test "linq36: ThenBy - Comparer" do
     words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
 
-    sorted_words = words 
-      |> Enum.sort_by(&String.downcase/1) 
+    sorted_words = words
+      |> Enum.sort_by(&String.downcase/1)
       |> Enum.sort_by(&String.length/1)
 
     # IO.inspect sorted_words
@@ -103,7 +103,7 @@ defmodule ElixirLinqExamples.Ordering do
   test "linq37: ThenByDescending - Simple" do
     products = get_product_list()
 
-    sorted_products = products 
+    sorted_products = products
       |> Enum.sort(fn x,y -> x.unit_price >= y.unit_price end)
       |> Enum.sort_by(&(&1.category))
 

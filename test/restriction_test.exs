@@ -17,26 +17,30 @@ defmodule ElixirLinqExamples.Restriction do
 
   test "linq2: Where - Simple 2" do
     products = get_product_list()
-    
-    sold_out_products = 
-      products 
+
+    sold_out_products =
+      products
       |> Enum.filter(fn x -> x.units_in_stock == 0 end)
 
     #IO.puts "Sold out products:"
+
+    assert Enum.count(sold_out_products) == 5
+    first_product = %Product{category: "Condiments", product_id: 5, product_name: "Chef Anton's Gumbo Mix", unit_price: 21.35, units_in_stock: 0}
+    assert sold_out_products |> Enum.at(0) == first_product
 
     #for n <- sold_out_products, do: IO.puts "#{n.product_name} is sold out!"
   end
 
   test "linq3: Where - Simple 3" do
     products = get_product_list()
-    
-    sold_out_products = 
-      products 
+
+    in_stock_and_more_than_3 =
+      products
       |> Enum.filter(fn x -> x.units_in_stock > 0 && x.unit_price > 3.00 end)
 
-    #IO.puts "In-stock products that cost more than 3.00:"
-
-    #for n <- sold_out_products, do: IO.puts "#{n.product_name} is in stock and costs more than 3.00!"
+    first = in_stock_and_more_than_3 |> Enum.at(0)
+    assert in_stock_and_more_than_3 |> Enum.count == 71
+    assert first == %Product{category: "Beverages", product_id: 1, product_name: "Chai", unit_price: 18.0, units_in_stock: 39}
   end
 
   test "linq4: Where - Drilldown" do
@@ -56,7 +60,7 @@ defmodule ElixirLinqExamples.Restriction do
   test "linq5: Where - Indexed" do
     digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
-    short_digits = digits 
+    short_digits = digits
       |> Stream.with_index
       |> Stream.filter(fn {entry, index} -> String.length(entry) < index end)
       |> Stream.map(fn {x,_} -> x end)
