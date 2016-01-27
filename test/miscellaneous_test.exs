@@ -34,11 +34,7 @@ defmodule ElixirLinqExamples.Miscellaneous do
     words_a = ["cherry", "apple", "blueberry"]
     words_b = ["cherry", "apple", "blueberry"]
 
-    match = words_a == words_b
-
-    # IO.puts "The sequences match: #{match}"
-
-    assert match
+    assert words_a == words_b
   end
 
   test "linq97: EqualAll - 2" do

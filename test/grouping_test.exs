@@ -21,7 +21,7 @@ defmodule ElixirLinqExamples.Grouping do
   test "linq41: GroupBy - Simple 2" do
     words = ["blueberry", "chimpanzee", "abacus", "banana", "apple", "cheese"]
 
-    word_groups = words 
+    word_groups = words
       |> Enum.group_by(fn x -> String.at(x, 0) end)
       |> Enum.map(fn {fl, words} -> %{first_letter: fl, words: words} end)
 
@@ -52,22 +52,22 @@ defmodule ElixirLinqExamples.Grouping do
       |> Enum.map(
         fn c ->
           %{
-            company_name: c.name, 
-            year_groups: 
+            company_name: c.name,
+            year_groups:
               c.orders
                 |> Enum.group_by(fn o -> o.orderdate.year end)
                 |> Enum.map(
-                  fn {year, year_orders} -> 
+                  fn {year, year_orders} ->
                     %{
                       year: year,
                       month_groups:
                         year_orders
                           |> Enum.group_by(fn o -> o.orderdate.month end)
-                          |> Enum.map(fn {month, month_orders} -> 
+                          |> Enum.map(fn {month, month_orders} ->
                             %{
-                              month: month, 
+                              month: month,
                               orders: month_orders
-                            } 
+                            }
                           end)
                     }
                   end)
@@ -82,13 +82,13 @@ defmodule ElixirLinqExamples.Grouping do
   test "linq44: GroupBy - Comparer" do
     anagrams = ["from   ", " salt", " earn ", "  last   ", " near ", " form  "]
 
-    order_groups = anagrams 
+    order_groups = anagrams
       |> Enum.group_by(
-        fn x -> x 
-          |> String.strip 
-          |> String.downcase 
-          |> String.codepoints 
-          |> Enum.sort 
+        fn x -> x
+          |> String.strip
+          |> String.downcase
+          |> String.codepoints
+          |> Enum.sort
         end)
 
     # for g <- order_groups, do: IO.inspect elem(g, 1)
@@ -99,13 +99,13 @@ defmodule ElixirLinqExamples.Grouping do
   test "linq45: GroupBy - Comparer, Mapped" do
     anagrams = ["from   ", " salt", " earn ", "  last   ", " near ", " form  "]
 
-    order_groups = anagrams 
+    order_groups = anagrams
       |> Enum.group_by(
-        fn x -> x 
-          |> String.strip 
-          |> String.downcase 
-          |> String.codepoints 
-          |> Enum.sort 
+        fn x -> x
+          |> String.strip
+          |> String.downcase
+          |> String.codepoints
+          |> Enum.sort
         end)
       |> Enum.map(fn {_, words} -> words |> Enum.map(&String.upcase/1) end)
 

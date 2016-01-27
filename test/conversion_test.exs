@@ -3,7 +3,7 @@ defmodule ElixirLinqExamples.Conversion do
 
   test "linq54: ToArray" do
     doubles = [1.7, 2.3, 1.9, 4.1, 2.9];
-    
+
     sorted_doubles = doubles |> Enum.sort(& &1 > &2)
 
     # IO.puts "Every other double from highest to lowest:"
@@ -15,7 +15,7 @@ defmodule ElixirLinqExamples.Conversion do
   test "linq55: ToList" do
     ## LINQ uses lazy evaluation.
     ## The best comparison here would be using a Stream.
-    ## But Stream doesn't have a sort method, 
+    ## But Stream doesn't have a sort method,
     ## and it makes sense, since sorting traverses the whole list anyway.
     ## For reference see: http://elixir-lang.org/getting-started/enumerables-and-streams.html
 
