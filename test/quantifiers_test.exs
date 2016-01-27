@@ -43,9 +43,10 @@ defmodule ElixirLinqExamples.Quantifiers do
       |> Enum.filter(fn {_,prods} -> prods |> Enum.all?(fn p -> p.units_in_stock > 0 end) end)
       |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
 
-    assert 5 == length(product_groups)
     first_group = product_groups |> Enum.at(0)
     assert first_group.category == "Beverages"
     assert 12 == length(first_group.products)
+    assert 5 == length(product_groups)
+    # IO.inspect product_groups
   end
 end

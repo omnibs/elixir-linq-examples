@@ -41,6 +41,9 @@ defmodule ElixirLinqExamples.Restriction do
     first = in_stock_and_more_than_3 |> Enum.at(0)
     assert in_stock_and_more_than_3 |> Enum.count == 71
     assert first == %Product{category: "Beverages", product_id: 1, product_name: "Chai", unit_price: 18.0, units_in_stock: 39}
+
+    #IO.puts "In-stock products that cost more than 3.00:"
+    #for n <- in_stock_and_more_than_3, do: IO.puts "#{n.product_name} is in stock and costs more than 3.00!"
   end
 
   test "linq4: Where - Drilldown" do
