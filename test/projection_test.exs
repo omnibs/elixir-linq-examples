@@ -71,9 +71,9 @@ defmodule ElixirLinqExamples.Projection do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
     nums_in_place = numbers
-      |> Stream.with_index
-      |> Stream.map(fn {x,idx} -> %{num: x, in_place: x == idx} end)
-      |> Enum.to_list
+    |> Stream.with_index
+    |> Stream.map(fn {x,idx} -> %{num: x, in_place: x == idx} end)
+    |> Enum.to_list
 
     # IO.puts "Number: In-place?"
     # for n <- nums_in_place, do: IO.puts "#{n.num}: #{n.in_place}"

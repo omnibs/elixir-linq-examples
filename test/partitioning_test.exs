@@ -19,9 +19,9 @@ defmodule ElixirLinqExamples.Partitioning do
 
     first_3_wa_orders =
       (for c <- customers,
-          o <- c.orders,
-          c.region == "WA",
-          do: %{customer_id: c.id, order_id: o.id, order_date: o.orderdate})
+           o <- c.orders,
+           c.region == "WA",
+           do: %{customer_id: c.id, order_id: o.id, order_date: o.orderdate})
       |> Enum.take(3)
 
     # IO.puts "First 3 orders in WA:"
@@ -72,9 +72,9 @@ defmodule ElixirLinqExamples.Partitioning do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
     first_small_numbers = numbers
-      |> Enum.with_index
-      |> Enum.take_while(fn {n, index} -> n >= index end)
-      |> Enum.map(fn {x,_} -> x end)
+    |> Enum.with_index
+    |> Enum.take_while(fn {n, index} -> n >= index end)
+    |> Enum.map(fn {x,_} -> x end)
 
     # IO.puts "First numbers not less than their position:"
     # for n <- first_small_numbers, do: IO.puts n
@@ -97,9 +97,9 @@ defmodule ElixirLinqExamples.Partitioning do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
     later_numbers = numbers
-      |> Enum.with_index
-      |> Enum.drop_while(fn {n, index} -> n >= index end)
-      |> Enum.map(fn {x,_} -> x end)
+    |> Enum.with_index
+    |> Enum.drop_while(fn {n, index} -> n >= index end)
+    |> Enum.map(fn {x,_} -> x end)
 
     # IO.puts "All elements starting from first element less than its position:"
     # for n <- later_numbers, do: IO.puts n

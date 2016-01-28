@@ -21,7 +21,7 @@ defmodule ElixirLinqExamples.Conversion do
 
     words = ["cherry", "apple", "blueberry"]
 
-    sorted_words = words |> Enum.sort
+    sorted_words = Enum.sort(words)
 
     word_list = sorted_words
 

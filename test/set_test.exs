@@ -6,7 +6,7 @@ defmodule ElixirLinqExamples.Set do
   test "linq46: Distinct - 1" do
     factors_of_300 = [2, 2, 3, 5, 5]
 
-    unique_factors = factors_of_300 |> Enum.uniq
+    unique_factors = Enum.uniq(factors_of_300)
 
     # IO.puts "Prime factors of 300:"
     # for f <- unique_factors, do: IO.puts f
@@ -42,9 +42,10 @@ defmodule ElixirLinqExamples.Set do
     customers = get_customer_list()
 
     product_first_chars = products 
-      |> Enum.map(fn x -> String.at(x.product_name, 0) end)
+    |> Enum.map(fn x -> String.at(x.product_name, 0) end)
+
     customer_first_chars = customers
-      |> Enum.map(fn x -> String.at(x.name, 0) end)
+    |> Enum.map(fn x -> String.at(x.name, 0) end)
 
     unique_first_chars = Set.union(Enum.into(product_first_chars, HashSet.new), Enum.into(customer_first_chars, HashSet.new)) |> Enum.sort
 
@@ -71,9 +72,10 @@ defmodule ElixirLinqExamples.Set do
     customers = get_customer_list()
 
     product_first_chars = products 
-      |> Enum.map(fn x -> String.at(x.product_name, 0) end)
+    |> Enum.map(fn x -> String.at(x.product_name, 0) end)
+
     customer_first_chars = customers
-      |> Enum.map(fn x -> String.at(x.name, 0) end)
+    |> Enum.map(fn x -> String.at(x.name, 0) end)
 
     common_first_chars = Set.intersection(Enum.into(product_first_chars, HashSet.new), Enum.into(customer_first_chars, HashSet.new)) |> Enum.sort
 
@@ -100,9 +102,10 @@ defmodule ElixirLinqExamples.Set do
     customers = get_customer_list()
 
     product_first_chars = products 
-      |> Enum.map(fn x -> String.at(x.product_name, 0) end)
+    |> Enum.map(fn x -> String.at(x.product_name, 0) end)
+
     customer_first_chars = customers
-      |> Enum.map(fn x -> String.at(x.name, 0) end)
+    |> Enum.map(fn x -> String.at(x.name, 0) end)
 
     product_only_first_chars = Set.difference(Enum.into(product_first_chars, HashSet.new), Enum.into(customer_first_chars, HashSet.new)) |> Enum.sort
 

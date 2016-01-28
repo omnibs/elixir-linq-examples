@@ -15,7 +15,7 @@ defmodule ElixirLinqExamples.QueryExecution do
     q = numbers |> Stream.map(fn _ -> Counter.inc(pid) end)
 
     values = "#{Counter.get(pid)} #{Enum.count(q)} #{Counter.get(pid)}" 
-    #  |> IO.puts
+    # |> IO.puts
 
     assert "0 10 10" == values
   end
@@ -29,7 +29,7 @@ defmodule ElixirLinqExamples.QueryExecution do
     q = numbers |> Enum.map(fn _ -> Counter.inc(pid) end)
 
     values = "#{Counter.get(pid)} #{Enum.count(q)} #{Counter.get(pid)}" 
-    #  |> IO.puts
+    # |> IO.puts
 
     assert "10 10 10" == values
   end

@@ -5,7 +5,7 @@ defmodule ElixirLinqExamples.Ordering do
 
   test "linq28: OrderBy - Simple 1" do
     words = ["cherry", "apple", "blueberry"]
-    sorted_words = words |> Enum.sort
+    sorted_words = Enum.sort(words)
 
     # IO.puts "The sorted list of words:"
     # for w <- words, do: IO.puts w
@@ -27,7 +27,7 @@ defmodule ElixirLinqExamples.Ordering do
     products = get_product_list()
 
     sorted_products = products
-      |> Enum.sort_by(fn x -> x.product_name end)
+    |> Enum.sort_by(fn x -> x.product_name end)
 
     # IO.inspect sorted_products
 
@@ -79,8 +79,8 @@ defmodule ElixirLinqExamples.Ordering do
     digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
     sorted_digits = digits
-      |> Enum.sort
-      |> Enum.sort_by(fn x -> String.length(x) end)
+    |> Enum.sort
+    |> Enum.sort_by(fn x -> String.length(x) end)
 
     # IO.puts "Sorted digits:"
     # for d <- sorted_digits, do: IO.puts d
@@ -92,8 +92,8 @@ defmodule ElixirLinqExamples.Ordering do
     words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
 
     sorted_words = words
-      |> Enum.sort_by(&String.downcase/1)
-      |> Enum.sort_by(&String.length/1)
+    |> Enum.sort_by(&String.downcase/1)
+    |> Enum.sort_by(&String.length/1)
 
     # IO.inspect sorted_words
 
@@ -104,8 +104,8 @@ defmodule ElixirLinqExamples.Ordering do
     products = get_product_list()
 
     sorted_products = products
-      |> Enum.sort(fn x,y -> x.unit_price >= y.unit_price end)
-      |> Enum.sort_by(&(&1.category))
+    |> Enum.sort(fn x,y -> x.unit_price >= y.unit_price end)
+    |> Enum.sort_by(&(&1.category))
 
     # IO.inspect sorted_products
 
@@ -116,8 +116,8 @@ defmodule ElixirLinqExamples.Ordering do
     words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
 
     sorted_words = words
-      |> Enum.sort(fn x,y -> String.downcase(x) >= String.downcase(y) end)
-      |> Enum.sort_by(&String.length/1)
+    |> Enum.sort(fn x,y -> String.downcase(x) >= String.downcase(y) end)
+    |> Enum.sort_by(&String.length/1)
 
     # IO.inspect sorted_words
 
@@ -128,8 +128,8 @@ defmodule ElixirLinqExamples.Ordering do
     digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
     reversed_i_digits = digits
-      |> Enum.filter(fn x -> String.at(x, 1) == "i" end)
-      |> Enum.reverse
+    |> Enum.filter(fn x -> String.at(x, 1) == "i" end)
+    |> Enum.reverse
 
     # IO.puts "A backwards list of the digits with a second character of 'i':"
     # for d <- reversed_i_digits, do: IO.puts d

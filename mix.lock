@@ -1,4 +1,6 @@
-%{"combine": {:hex, :combine, "0.5.2"},
+%{"bunt": {:hex, :bunt, "0.1.4"},
+  "combine": {:hex, :combine, "0.5.2"},
+  "credo": {:hex, :credo, "0.3.0-dev2"},
   "hackney": {:hex, :hackney, "1.3.2"},
   "httpoison": {:hex, :httpoison, "0.7.3"},
   "idna": {:hex, :idna, "1.0.2"},

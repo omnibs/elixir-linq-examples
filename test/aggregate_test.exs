@@ -8,8 +8,8 @@ defmodule ElixirLinqExamples.Aggregate do
     factors_of_300 = [2, 2, 3, 5, 5]
 
     unique_factors = factors_of_300
-      |> Enum.uniq
-      |> Enum.count
+    |> Enum.uniq
+    |> Enum.count
 
     # IO.puts "There are #{unique_factors} unique factors of 300."
 
@@ -41,8 +41,8 @@ defmodule ElixirLinqExamples.Aggregate do
     products = get_product_list()
 
     category_counts = products
-      |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map(fn {cat, prods} -> %{category: cat, product_count: prods |> Enum.count} end)
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.map(fn {cat, prods} -> %{category: cat, product_count: prods |> Enum.count} end)
 
     #IO.inspect category_counts
 
@@ -52,7 +52,7 @@ defmodule ElixirLinqExamples.Aggregate do
   test "linq78: Sum - Simple" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-    num_sum = numbers |> Enum.sum
+    num_sum = Enum.sum(numbers)
 
     # IO.puts "The sum of the numbers is #{num_sum}"
 
@@ -63,8 +63,8 @@ defmodule ElixirLinqExamples.Aggregate do
     words = ["cherry", "apple", "blueberry"]
 
     total_chars = words
-      |> Enum.map(&String.length/1)
-      |> Enum.sum
+    |> Enum.map(&String.length/1)
+    |> Enum.sum
 
     # IO.puts "There are a total of #{total_chars} characters in these words."
 
@@ -75,15 +75,15 @@ defmodule ElixirLinqExamples.Aggregate do
     products = get_product_list()
 
     categories = products
-      |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map(fn {cat, prods} ->
-        %{
-          category: cat,
-          total_units_in_stock: prods
-            |> Enum.map(fn p -> p.units_in_stock end)
-            |> Enum.sum
-        }
-      end)
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.map(fn {cat, prods} ->
+      %{
+        category: cat,
+        total_units_in_stock: prods
+        |> Enum.map(fn p -> p.units_in_stock end)
+        |> Enum.sum
+      }
+    end)
 
     # IO.inspect categories
 
@@ -93,7 +93,7 @@ defmodule ElixirLinqExamples.Aggregate do
   test "linq81: Min - Simple" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-    min_num = numbers |> Enum.min
+    min_num = Enum.min(numbers)
 
     # IO.puts "The minimum number is #{min_num}"
 
@@ -114,15 +114,15 @@ defmodule ElixirLinqExamples.Aggregate do
     products = get_product_list()
 
     categories = products
-      |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map(fn {cat, prods} ->
-        %{
-          category: cat,
-          cheapest_price: prods
-            |> Enum.map(fn p -> p.unit_price end)
-            |> Enum.min
-        }
-      end)
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.map(fn {cat, prods} ->
+      %{
+        category: cat,
+        cheapest_price: prods
+        |> Enum.map(fn p -> p.unit_price end)
+        |> Enum.min
+      }
+    end)
 
     # IO.inspect categories
 
@@ -133,17 +133,18 @@ defmodule ElixirLinqExamples.Aggregate do
     products = get_product_list()
 
     categories = products
-      |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map(fn {cat, prods} ->
-        min_price = prods
-            |> Enum.map(fn p -> p.unit_price end)
-            |> Enum.min
-        %{
-          category: cat,
-          cheapest_products: prods
-            |> Enum.filter(fn p -> p.unit_price == min_price end)
-        }
-      end)
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.map(fn {cat, prods} ->
+      min_price = prods
+      |> Enum.map(fn p -> p.unit_price end)
+      |> Enum.min
+
+      %{
+        category: cat,
+        cheapest_products: prods
+        |> Enum.filter(fn p -> p.unit_price == min_price end)
+      }
+    end)
 
     # IO.inspect categories
 
@@ -153,7 +154,7 @@ defmodule ElixirLinqExamples.Aggregate do
   test "linq85: Max - Simple" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-    max_num = numbers |> Enum.max
+    max_num = Enum.max(numbers)
 
     # IO.puts "The maximum number is #{max_num}"
 
@@ -174,15 +175,15 @@ defmodule ElixirLinqExamples.Aggregate do
     products = get_product_list()
 
     categories = products
-      |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map(fn {cat, prods} ->
-        %{
-          category: cat,
-          most_expensive_price: prods
-            |> Enum.map(fn p -> p.unit_price end)
-            |> Enum.max
-        }
-      end)
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.map(fn {cat, prods} ->
+      %{
+        category: cat,
+        most_expensive_price: prods
+        |> Enum.map(fn p -> p.unit_price end)
+        |> Enum.max
+      }
+    end)
 
     # IO.inspect categories
 
@@ -193,17 +194,18 @@ defmodule ElixirLinqExamples.Aggregate do
     products = get_product_list()
 
     categories = products
-      |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map(fn {cat, prods} ->
-        max_price = prods
-            |> Enum.map(fn p -> p.unit_price end)
-            |> Enum.max
-        %{
-          category: cat,
-          most_expensive_products: prods
-            |> Enum.filter(fn p -> p.unit_price == max_price end)
-        }
-      end)
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.map(fn {cat, prods} ->
+      max_price = prods
+      |> Enum.map(fn p -> p.unit_price end)
+      |> Enum.max
+
+      %{
+        category: cat,
+        most_expensive_products: prods
+        |> Enum.filter(fn p -> p.unit_price == max_price end)
+      }
+    end)
 
     # IO.inspect categories
 
@@ -213,7 +215,7 @@ defmodule ElixirLinqExamples.Aggregate do
   test "linq89: Average - Simple" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-    average_num = numbers |> average
+    average_num = numbers |> average()
 
     # IO.puts "The average number is #{average_num}"
 
@@ -224,8 +226,8 @@ defmodule ElixirLinqExamples.Aggregate do
     words = ["cherry", "apple", "blueberry"]
 
     average_length = words
-      |> Enum.map(&String.length/1)
-      |> average
+    |> Enum.map(&String.length/1)
+    |> average()
 
     # IO.puts "Average word length is #{average_length} characters."
 
@@ -236,15 +238,15 @@ defmodule ElixirLinqExamples.Aggregate do
     products = get_product_list()
 
     categories = products
-      |> Enum.group_by(fn x -> x.category end)
-      |> Enum.map(fn {cat, prods} ->
-        %{
-          category: cat,
-          average_price: prods
-            |> Enum.map(fn p -> p.unit_price end)
-            |> average
-        }
-      end)
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.map(fn {cat, prods} ->
+      %{
+        category: cat,
+        average_price: prods
+        |> Enum.map(fn p -> p.unit_price end)
+        |> average
+      }
+    end)
 
     # IO.inspect categories
 
@@ -267,9 +269,9 @@ defmodule ElixirLinqExamples.Aggregate do
     attempted_withdrawals = [20, 10, 40, 50, 10, 70, 30]
 
     end_balance = attempted_withdrawals
-      |> Enum.reduce(startBalance, fn next_withdrawal, balance ->
-          if next_withdrawal <= balance, do: balance - next_withdrawal, else: balance
-        end)
+    |> Enum.reduce(startBalance, fn next_withdrawal, balance ->
+      if next_withdrawal <= balance, do: balance - next_withdrawal, else: balance
+    end)
 
     # IO.puts "Ending balance: #{end_balance}"
 

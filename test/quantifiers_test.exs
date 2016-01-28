@@ -17,9 +17,9 @@ defmodule ElixirLinqExamples.Quantifiers do
     products = get_product_list()
 
     product_groups = products
-      |> Enum.group_by(fn x -> x.category end)
-      |> Enum.filter(fn {_,prods} -> prods |> Enum.any?(fn p -> p.units_in_stock == 0 end) end)
-      |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.filter(fn {_,prods} -> prods |> Enum.any?(fn p -> p.units_in_stock == 0 end) end)
+    |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
 
     # IO.inspect product_groups
 
@@ -43,9 +43,9 @@ defmodule ElixirLinqExamples.Quantifiers do
     products = get_product_list()
 
     product_groups = products
-      |> Enum.group_by(fn x -> x.category end)
-      |> Enum.filter(fn {_,prods} -> prods |> Enum.all?(fn p -> p.units_in_stock > 0 end) end)
-      |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
+    |> Enum.group_by(fn x -> x.category end)
+    |> Enum.filter(fn {_,prods} -> prods |> Enum.all?(fn p -> p.units_in_stock > 0 end) end)
+    |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
 
     # IO.inspect product_groups
 

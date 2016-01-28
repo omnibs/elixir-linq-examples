@@ -63,10 +63,10 @@ defmodule ElixirLinqExamples.Restriction do
     digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
     short_digits = digits
-      |> Stream.with_index
-      |> Stream.filter(fn {entry, index} -> String.length(entry) < index end)
-      |> Stream.map(fn {x,_} -> x end)
-      |> Enum.to_list
+    |> Stream.with_index
+    |> Stream.filter(fn {entry, index} -> String.length(entry) < index end)
+    |> Stream.map(fn {x,_} -> x end)
+    |> Enum.to_list
 
     # for n <- short_digits, do: IO.puts "The word #{n} is shorter than its value"
 
