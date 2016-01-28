@@ -34,6 +34,8 @@ defmodule ElixirLinqExamples.Miscellaneous do
     words_a = ["cherry", "apple", "blueberry"]
     words_b = ["cherry", "apple", "blueberry"]
 
+    # IO.puts "The sequences match: #{words_a == words_b}"
+
     assert words_a == words_b
   end
 

@@ -9,8 +9,8 @@ defmodule ElixirLinqExamples.Restriction do
 
     low_nums = numbers |> Enum.filter(fn x -> x < 5 end)
 
-    #IO.puts "Numbers < 5:"
-    #for n <- low_nums, do: IO.puts n
+    # IO.puts "Numbers < 5:"
+    # for n <- low_nums, do: IO.puts n
 
     assert low_nums == [4,1,3,2,0]
   end
@@ -22,13 +22,12 @@ defmodule ElixirLinqExamples.Restriction do
       products
       |> Enum.filter(fn x -> x.units_in_stock == 0 end)
 
-    #IO.puts "Sold out products:"
+    # IO.puts "Sold out products:"
+    # for n <- sold_out_products, do: IO.puts "#{n.product_name} is sold out!"
 
     assert Enum.count(sold_out_products) == 5
     first_product = %Product{category: "Condiments", product_id: 5, product_name: "Chef Anton's Gumbo Mix", unit_price: 21.35, units_in_stock: 0}
     assert sold_out_products |> Enum.at(0) == first_product
-
-    #for n <- sold_out_products, do: IO.puts "#{n.product_name} is sold out!"
   end
 
   test "linq3: Where - Simple 3" do
@@ -38,12 +37,12 @@ defmodule ElixirLinqExamples.Restriction do
       products
       |> Enum.filter(fn x -> x.units_in_stock > 0 && x.unit_price > 3.00 end)
 
+    # IO.puts "In-stock products that cost more than 3.00:"
+    # for n <- in_stock_and_more_than_3, do: IO.puts "#{n.product_name} is in stock and costs more than 3.00!"
+
     first = in_stock_and_more_than_3 |> Enum.at(0)
     assert in_stock_and_more_than_3 |> Enum.count == 71
     assert first == %Product{category: "Beverages", product_id: 1, product_name: "Chai", unit_price: 18.0, units_in_stock: 39}
-
-    #IO.puts "In-stock products that cost more than 3.00:"
-    #for n <- in_stock_and_more_than_3, do: IO.puts "#{n.product_name} is in stock and costs more than 3.00!"
   end
 
   test "linq4: Where - Drilldown" do
@@ -69,7 +68,7 @@ defmodule ElixirLinqExamples.Restriction do
       |> Stream.map(fn {x,_} -> x end)
       |> Enum.to_list
 
-    #for n <- short_digits, do: IO.puts "The word #{n} is shorter than its value"
+    # for n <- short_digits, do: IO.puts "The word #{n} is shorter than its value"
 
     assert length(short_digits) == 5
   end

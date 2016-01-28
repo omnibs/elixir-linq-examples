@@ -21,6 +21,8 @@ defmodule ElixirLinqExamples.Quantifiers do
       |> Enum.filter(fn {_,prods} -> prods |> Enum.any?(fn p -> p.units_in_stock == 0 end) end)
       |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
 
+    # IO.inspect product_groups
+
     assert 3 == length(product_groups)
     first_group = product_groups|> Enum.at(0)
     assert first_group.category == "Condiments"
@@ -31,6 +33,8 @@ defmodule ElixirLinqExamples.Quantifiers do
     require Integer
     numbers = [1, 11, 3, 19, 41, 65, 19]
     only_odd = numbers |> Enum.all?(fn x -> Integer.is_odd(x) end)
+
+    # IO.puts "The list contains only odd numbers: #{only_odd}"
 
     assert only_odd == true
   end
@@ -43,10 +47,11 @@ defmodule ElixirLinqExamples.Quantifiers do
       |> Enum.filter(fn {_,prods} -> prods |> Enum.all?(fn p -> p.units_in_stock > 0 end) end)
       |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
 
+    # IO.inspect product_groups
+
     first_group = product_groups |> Enum.at(0)
     assert first_group.category == "Beverages"
     assert 12 == length(first_group.products)
     assert 5 == length(product_groups)
-    # IO.inspect product_groups
   end
 end

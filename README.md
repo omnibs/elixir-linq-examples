@@ -127,14 +127,17 @@ public void Linq2()
 # elixir
 test "linq2: Where - Simple 2" do
   products = get_product_list()
-  
-  sold_out_products = 
-    products 
+
+  sold_out_products =
+    products
     |> Enum.filter(fn x -> x.units_in_stock == 0 end)
 
   IO.puts "Sold out products:"
-
   for n <- sold_out_products, do: IO.puts "#{n.product_name} is sold out!"
+
+  assert Enum.count(sold_out_products) == 5
+  first_product = %Product{category: "Condiments", product_id: 5, product_name: "Chef Anton's Gumbo Mix", unit_price: 21.35, units_in_stock: 0}
+  assert sold_out_products |> Enum.at(0) == first_product
 end
 ```
 #### Output
@@ -169,14 +172,17 @@ public void Linq3()
 # elixir
 test "linq3: Where - Simple 3" do
   products = get_product_list()
-  
-  sold_out_products = 
-    products 
+
+  in_stock_and_more_than_3 =
+    products
     |> Enum.filter(fn x -> x.units_in_stock > 0 && x.unit_price > 3.00 end)
 
   IO.puts "In-stock products that cost more than 3.00:"
+  for n <- in_stock_and_more_than_3, do: IO.puts "#{n.product_name} is in stock and costs more than 3.00!"
 
-  for n <- sold_out_products, do: IO.puts "#{n.product_name} is in stock and costs more than 3.00!"
+  first = in_stock_and_more_than_3 |> Enum.at(0)
+  assert in_stock_and_more_than_3 |> Enum.count == 71
+  assert first == %Product{category: "Beverages", product_id: 1, product_name: "Chai", unit_price: 18.0, units_in_stock: 39}
 end
 ```
 #### Output
@@ -260,7 +266,7 @@ public void Linq5()
 test "linq5: Where - Indexed" do
   digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
-  short_digits = digits 
+  short_digits = digits
     |> Stream.with_index
     |> Stream.filter(fn {entry, index} -> String.length(entry) < index end)
     |> Stream.map(fn {x,_} -> x end)
@@ -439,6 +445,8 @@ test "linq9: Select - Anonymous Types 1" do
   upper_lower_words = words |> Enum.map(fn x -> %{lower: String.downcase(x), upper: String.upcase(x)} end)
 
   for n <- upper_lower_words, do: IO.puts "Uppercase: #{n.upper}, Lowercase: #{n.lower}" end
+
+  assert hd(upper_lower_words) == %{lower: "apple", upper: "APPLE"}
 end
 ```
 #### Output
@@ -550,9 +558,9 @@ public void Linq12()
 test "linq12: Select - Indexed" do
   numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-  nums_in_place = numbers 
-    |> Stream.with_index 
-    |> Stream.map(fn {x,idx} -> %{num: x, in_place: x == idx} end) 
+  nums_in_place = numbers
+    |> Stream.with_index
+    |> Stream.map(fn {x,idx} -> %{num: x, in_place: x == idx} end)
     |> Enum.to_list
 
   IO.puts "Number: In-place?"
@@ -694,7 +702,7 @@ public void Linq15()
 test "linq15: SelectMany - Compound from 2" do
   customers = get_customer_list()
 
-  orders = 
+  orders =
     for c <- customers,
         o <- c.orders,
         do: %{customer_id: c.id, order_id: o.id, total: o.total}
@@ -733,7 +741,7 @@ public void Linq16()
 test "linq16: SelectMany - Compound from 3" do
   customers = get_customer_list()
 
-  orders = 
+  orders =
     for c <- customers,
         o <- c.orders,
         Timex.Date.compare(o.orderdate, Timex.Date.from({1998, 1, 1})) >= 0,
@@ -774,7 +782,7 @@ public void Linq17()
 test "linq17: SelectMany - from Assignment" do
   customers = get_customer_list()
 
-  orders = 
+  orders =
     for c <- customers,
         o <- c.orders,
         elem(Float.parse(o.total), 0) >= 2000.0,
@@ -820,7 +828,7 @@ test "linq18: SelectMany - Multiple from" do
 
   cutoff_date = Timex.Date.from({1997, 1, 1})
 
-  orders = 
+  orders =
     for c <- customers,
         o <- c.orders,
         c.region == "WA",
@@ -873,15 +881,15 @@ public void Linq19()
 test "linq19: SelectMany - Indexed" do
   customers = get_customer_list()
 
-  cutoff_date = Timex.Date.from({1997, 1, 1})
-
-  customerOrders = 
+  customerOrders =
     for {c, idx} <- Enum.with_index(customers),
         o <- c.orders,
         do: "Customer ##{idx + 1} has an order with OrderId #{o.id}"
 
   IO.inspect customerOrders
 
+  assert customerOrders |> Enum.at(0) == "Customer #1 has an order with OrderId 10643"
+  assert customerOrders |> Enum.at(-1) == "Customer #91 has an order with OrderId 11044"
   assert length(customerOrders) == 830
 end
 ```
@@ -963,7 +971,7 @@ public void Linq21()
 test "linq21: Take - Nested" do
   customers = get_customer_list()
 
-  first_3_wa_orders = 
+  first_3_wa_orders =
     (for c <- customers,
         o <- c.orders,
         c.region == "WA",
@@ -1049,7 +1057,7 @@ public void Linq23()
 test "linq23: Skip - Nested" do
   customers = get_customer_list()
 
-  wa_orders = 
+  wa_orders =
     for c <- customers,
         o <- c.orders,
         c.region == "WA",
@@ -1142,7 +1150,7 @@ public void Linq25()
 test "linq25: TakeWhile - Indexed" do
   numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-  first_small_numbers = numbers 
+  first_small_numbers = numbers
     |> Enum.with_index
     |> Enum.take_while(fn {n, index} -> n >= index end)
     |> Enum.map(fn {x,_} -> x end)
@@ -1220,7 +1228,7 @@ public void Linq27()
 test "linq27: SkipWhile - Indexed" do
   numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-  later_numbers = numbers 
+  later_numbers = numbers
     |> Enum.with_index
     |> Enum.drop_while(fn {n, index} -> n >= index end)
     |> Enum.map(fn {x,_} -> x end)
@@ -1353,7 +1361,7 @@ public void Linq30()
 test "linq30: OrderBy - Simple 3" do
   products = get_product_list()
 
-  sorted_products = products 
+  sorted_products = products
     |> Enum.sort_by(fn x -> x.product_name end)
 
   IO.inspect sorted_products
@@ -1537,8 +1545,8 @@ public void Linq35()
 test "linq35: ThenBy - Simple" do
   digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
-  sorted_digits = digits 
-    |> Enum.sort 
+  sorted_digits = digits
+    |> Enum.sort
     |> Enum.sort_by(fn x -> String.length(x) end)
 
   IO.puts "Sorted digits:"
@@ -1580,8 +1588,8 @@ public void Linq36()
 test "linq36: ThenBy - Comparer" do
   words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
 
-  sorted_words = words 
-    |> Enum.sort_by(&String.downcase/1) 
+  sorted_words = words
+    |> Enum.sort_by(&String.downcase/1)
     |> Enum.sort_by(&String.length/1)
 
   IO.inspect sorted_words
@@ -1618,7 +1626,7 @@ public void Linq37()
 test "linq37: ThenByDescending - Simple" do
   products = get_product_list()
 
-  sorted_products = products 
+  sorted_products = products
     |> Enum.sort(fn x,y -> x.unit_price >= y.unit_price end)
     |> Enum.sort_by(&(&1.category))
 
@@ -1829,7 +1837,7 @@ public void Linq41()
 test "linq41: GroupBy - Simple 2" do
   words = ["blueberry", "chimpanzee", "abacus", "banana", "apple", "cheese"]
 
-  word_groups = words 
+  word_groups = words
     |> Enum.group_by(fn x -> String.at(x, 0) end)
     |> Enum.map(fn {fl, words} -> %{first_letter: fl, words: words} end)
 
@@ -1926,22 +1934,22 @@ test "linq43: GroupBy - Nested" do
     |> Enum.map(
       fn c ->
         %{
-          company_name: c.name, 
-          year_groups: 
+          company_name: c.name,
+          year_groups:
             c.orders
               |> Enum.group_by(fn o -> o.orderdate.year end)
               |> Enum.map(
-                fn {year, year_orders} -> 
+                fn {year, year_orders} ->
                   %{
                     year: year,
                     month_groups:
                       year_orders
                         |> Enum.group_by(fn o -> o.orderdate.month end)
-                        |> Enum.map(fn {month, month_orders} -> 
+                        |> Enum.map(fn {month, month_orders} ->
                           %{
-                            month: month, 
+                            month: month,
                             orders: month_orders
-                          } 
+                          }
                         end)
                   }
                 end)
@@ -1974,13 +1982,13 @@ public void Linq44()
 test "linq44: GroupBy - Comparer" do
   anagrams = ["from   ", " salt", " earn ", "  last   ", " near ", " form  "]
 
-  order_groups = anagrams 
+  order_groups = anagrams
     |> Enum.group_by(
-      fn x -> x 
-        |> String.strip 
-        |> String.downcase 
-        |> String.codepoints 
-        |> Enum.sort 
+      fn x -> x
+        |> String.strip
+        |> String.downcase
+        |> String.codepoints
+        |> Enum.sort
       end)
 
   for g <- order_groups, do: IO.inspect elem(g, 1)
@@ -2015,13 +2023,13 @@ public void Linq45()
 test "linq45: GroupBy - Comparer, Mapped" do
   anagrams = ["from   ", " salt", " earn ", "  last   ", " near ", " form  "]
 
-  order_groups = anagrams 
+  order_groups = anagrams
     |> Enum.group_by(
-      fn x -> x 
-        |> String.strip 
-        |> String.downcase 
-        |> String.codepoints 
-        |> Enum.sort 
+      fn x -> x
+        |> String.strip
+        |> String.downcase
+        |> String.codepoints
+        |> Enum.sort
       end)
     |> Enum.map(fn {_, words} -> words |> Enum.map(&String.upcase/1) end)
 
@@ -2453,7 +2461,7 @@ public void Linq54()
 # elixir
 test "linq54: ToArray" do
   doubles = [1.7, 2.3, 1.9, 4.1, 2.9];
-  
+
   sorted_doubles = doubles |> Enum.sort(& &1 > &2)
 
   IO.puts "Every other double from highest to lowest:"
@@ -2494,7 +2502,7 @@ public void Linq55()
 test "linq55: ToList" do
   # LINQ uses lazy evaluation.
   # The best comparison here would be using a Stream.
-  # But Stream doesn't have a sort method, 
+  # But Stream doesn't have a sort method,
   # and it makes sense, since sorting traverses the whole list anyway.
   # For reference see: http://elixir-lang.org/getting-started/enumerables-and-streams.html
 
@@ -2885,6 +2893,9 @@ test "linq69: Any - Grouped" do
   IO.inspect product_groups
 
   assert 3 == length(product_groups)
+  first_group = product_groups|> Enum.at(0)
+  assert first_group.category == "Condiments"
+  assert first_group.products |> Enum.count == 12
 end
 ```
 #### Output
@@ -2908,14 +2919,12 @@ public void Linq70()
 # elixir
 test "linq70: All - Simple" do
   require Integer
-
   numbers = [1, 11, 3, 19, 41, 65, 19]
-
   only_odd = numbers |> Enum.all?(fn x -> Integer.is_odd(x) end)
 
   IO.puts "The list contains only odd numbers: #{only_odd}"
 
-  assert only_odd
+  assert only_odd == true
 end
 ```
 #### Output
@@ -2950,6 +2959,9 @@ test "linq72: All - Grouped" do
 
   IO.inspect product_groups
 
+  first_group = product_groups |> Enum.at(0)
+  assert first_group.category == "Beverages"
+  assert 12 == length(first_group.products)
   assert 5 == length(product_groups)
 end
 ```
@@ -3811,11 +3823,9 @@ test "linq96: EqualAll - 1" do
   words_a = ["cherry", "apple", "blueberry"]
   words_b = ["cherry", "apple", "blueberry"]
 
-  match = words_a == words_b
+  IO.puts "The sequences match: #{words_a == words_b}"
 
-  IO.puts "The sequences match: #{match}"
-
-  assert match
+  assert words_a == words_b
 end
 ```
 #### Output
@@ -4094,10 +4104,10 @@ test "linq102: Cross Join" do
 
   products = get_product_list()
 
-  q = 
-    for c <- categories, 
-      p <- products, 
-      p.category == c, 
+  q =
+    for c <- categories,
+      p <- products,
+      p.category == c,
       do: %{category: c, product_name: p.product_name}
 
   for v <- q, do: IO.puts "#{v.product_name}: #{v.category}"

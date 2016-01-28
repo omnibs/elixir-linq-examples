@@ -40,8 +40,10 @@ defmodule ElixirLinqExamples.Projection do
     words = ["aPPLE", "BlUeBeRrY", "cHeRry"]
 
     upper_lower_words = words |> Enum.map(fn x -> %{lower: String.downcase(x), upper: String.upcase(x)} end)
-    first = upper_lower_words |> Enum.at(0)
-    assert first == %{lower: "apple", upper: "APPLE"}
+
+    # for n <- upper_lower_words, do: IO.puts "Uppercase: #{n.upper}, Lowercase: #{n.lower}" end
+
+    assert hd(upper_lower_words) == %{lower: "apple", upper: "APPLE"}
   end
 
   test "linq10: Select - Anonymous Types 2" do
@@ -168,6 +170,8 @@ defmodule ElixirLinqExamples.Projection do
       for {c, idx} <- Enum.with_index(customers),
           o <- c.orders,
           do: "Customer ##{idx + 1} has an order with OrderId #{o.id}"
+
+    # IO.inspect customerOrders
 
     assert customerOrders |> Enum.at(0) == "Customer #1 has an order with OrderId 10643"
     assert customerOrders |> Enum.at(-1) == "Customer #91 has an order with OrderId 11044"
