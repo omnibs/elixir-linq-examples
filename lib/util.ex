@@ -3,7 +3,7 @@ defmodule ElixirLinqExamples.Util do
     String.downcase(x) != String.downcase(y) && normalize(x) == normalize(y)
   end
   defp normalize(x) do
-    x |> String.downcase |> String.codepoints |> String.sort
+    x |> String.downcase |> String.codepoints |> Enum.sort
   end
 
   def average(list) do

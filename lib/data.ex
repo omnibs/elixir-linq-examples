@@ -22,7 +22,7 @@ defmodule ElixirLinqExamples.Data do
     if customer.orders != nil && customer.orders.order != nil do
       orders = Enum.map(customer.orders.order, fn o ->
             o = struct(Order, o)
-            {:ok, orderdate} = Timex.DateFormat.parse(o.orderdate, "{ISOz}")
+            {:ok, orderdate} = Timex.parse(o.orderdate, "{ISOz}")
             %{ o | orderdate: orderdate}
       end)
       %{customer | orders: orders}

@@ -4,7 +4,7 @@ defmodule ElixirLinqExamples.Mixfile do
   def project do
     [app: :elixir_linq_examples,
      version: "0.0.1",
-     elixir: "~> 1.0",
+     elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
@@ -28,8 +28,8 @@ defmodule ElixirLinqExamples.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     [
-      {:poison, "~> 1.5"},
-      {:timex, "~>0.19.2"}
+      {:poison, "~>2.2.0"},
+      {:timex, "~>2.2.1"}
     ]
   end
 end
